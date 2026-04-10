@@ -1,0 +1,15 @@
+set(CMAKE_HOST_SYSTEM "Windows-10.0.26200")
+set(CMAKE_HOST_SYSTEM_NAME "Windows")
+set(CMAKE_HOST_SYSTEM_VERSION "10.0.26200")
+set(CMAKE_HOST_SYSTEM_PROCESSOR "AMD64")
+
+include("D:/Hell_borne/Hell_borne/qnx/aarch64le/cmake-toolchain-qnx-aarch64le.cmake")
+
+set(CMAKE_SYSTEM "QNX-8.0")
+set(CMAKE_SYSTEM_NAME "QNX")
+set(CMAKE_SYSTEM_VERSION "8.0")
+set(CMAKE_SYSTEM_PROCESSOR "")
+
+set(CMAKE_CROSSCOMPILING "TRUE")
+
+set(CMAKE_SYSTEM_LOADED 1)

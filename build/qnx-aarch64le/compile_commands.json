@@ -1,0 +1,14 @@
+[
+{
+  "directory": "D:/Hell_borne/Hell_borne/build/qnx-aarch64le",
+  "command": "D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++  -ID:/Hell_borne/Hell_borne -ID:/qnx800_4/target/qnx/usr/include -Vgcc_ntoaarch64le_gpp -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/hellborne.dir/main.cpp.o -c D:/Hell_borne/Hell_borne/main.cpp",
+  "file": "D:/Hell_borne/Hell_borne/main.cpp",
+  "output": "CMakeFiles/hellborne.dir/main.cpp.o"
+},
+{
+  "directory": "D:/Hell_borne/Hell_borne/build/qnx-aarch64le",
+  "command": "D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++  -ID:/Hell_borne/Hell_borne -ID:/qnx800_4/target/qnx/usr/include -Vgcc_ntoaarch64le_gpp -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/hellborne.dir/game.cpp.o -c D:/Hell_borne/Hell_borne/game.cpp",
+  "file": "D:/Hell_borne/Hell_borne/game.cpp",
+  "output": "CMakeFiles/hellborne.dir/game.cpp.o"
+}
+]
