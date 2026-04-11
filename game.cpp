@@ -5,7 +5,7 @@
 #include <cmath>
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
+    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 0, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
 }
 
 void Game::restartGame() {
@@ -16,6 +16,7 @@ void Game::restartGame() {
     player.hasPistol = false;
     player.hasShotgun = false;
     player.pistolAmmo = 0;
+    player.shotgunAmmo = 0;
     player.killCount = 0;
     player.grenadeCount = 2;
 
@@ -265,19 +266,19 @@ bool Game::isPointInRect(int x, int y, const SDL_Rect& rect) const {
 
 void Game::handleWeaponInput(const SDL_Event& event) {
     if (event.type == SDL_KEYDOWN) {
-        if (event.key.keysym.sym == SDLK_1) {
+        if (event.key.keysym.sym == SDLK_1 && event.key.repeat == 0) {
             selectedWeapon = WeaponSelection::Melee;
         }
 
-        if (event.key.keysym.sym == SDLK_2 && player.hasPistol) {
+        if (event.key.keysym.sym == SDLK_2 && event.key.repeat == 0 && player.hasPistol) {
             selectedWeapon = WeaponSelection::Pistol;
         }
 
-        if (event.key.keysym.sym == SDLK_3 && player.hasShotgun) {
+        if (event.key.keysym.sym == SDLK_3 && event.key.repeat == 0 && player.hasShotgun) {
             selectedWeapon = WeaponSelection::Shotgun;
         }
 
-        if (event.key.keysym.sym == SDLK_q) {
+        if (event.key.keysym.sym == SDLK_q && event.key.repeat == 0) {
             if (selectedWeapon == WeaponSelection::Melee) {
                 selectedWeapon = player.hasPistol ? WeaponSelection::Pistol : WeaponSelection::Melee;
             } else if (selectedWeapon == WeaponSelection::Pistol) {
@@ -344,7 +345,7 @@ void Game::performSelectedAttack() {
         return;
     }
 
-    if (!player.hasShotgun) {
+    if (!player.hasShotgun || player.shotgunAmmo <= 0) {
         return;
     }
 
@@ -359,7 +360,9 @@ void Game::performSelectedAttack() {
         p.y = player.y + player.height / 2 + i * 6;
         projectiles.push_back(p);
     }
+    player.shotgunAmmo -= 1;
     player.attackCooldownTimer = 0.35f;
+    SDL_Log("Shotgun ammo: %d", player.shotgunAmmo);
 }
 
 void Game::applyEnemyDamage(Enemy& enemy, int damage, bool triggerRage) {
@@ -384,6 +387,14 @@ void Game::applyEnemyDamage(Enemy& enemy, int damage, bool triggerRage) {
             player.pistolAmmo += 3;
         } else if (std::rand() % 3 == 0) {
             player.pistolAmmo += 1;
+        }
+
+        if (player.hasShotgun) {
+            if (player.killCount % 4 == 0) {
+                player.shotgunAmmo += 1;
+            } else if (std::rand() % 5 == 0) {
+                player.shotgunAmmo += 1;
+            }
         }
     }
 }
@@ -536,14 +547,31 @@ void Game::updateGrenades(float frameSeconds) {
         }
 
         if (g.timer <= 0.0f) {
-            const float radius = 100.0f;
+            const float radius = 120.0f;
+            const float grenadeCenterX = g.x + 5.0f;
+            const float grenadeCenterY = g.y + 5.0f;
+
+            SDL_Rect explosionRect = {
+                static_cast<int>(grenadeCenterX - radius),
+                static_cast<int>(grenadeCenterY - radius),
+                static_cast<int>(radius * 2.0f),
+                static_cast<int>(radius * 2.0f)
+            };
 
             if (bossActive && boss.isAlive) {
-                float dx = boss.x - g.x;
-                float dy = boss.y - g.y;
-                float distance = std::sqrt(dx * dx + dy * dy);
+                SDL_Rect bossRect = {
+                    static_cast<int>(boss.x),
+                    static_cast<int>(boss.y),
+                    boss.width,
+                    boss.height
+                };
 
-                if (distance < radius) {
+                bool overlaps = explosionRect.x < bossRect.x + bossRect.w &&
+                                explosionRect.x + explosionRect.w > bossRect.x &&
+                                explosionRect.y < bossRect.y + bossRect.h &&
+                                explosionRect.y + explosionRect.h > bossRect.y;
+
+                if (overlaps) {
                     boss.health -= 5;
                 }
             }
@@ -553,8 +581,10 @@ void Game::updateGrenades(float frameSeconds) {
                     continue;
                 }
 
-                float dx = enemy.x - g.x;
-                float dy = enemy.y - g.y;
+                float enemyCenterX = enemy.x + static_cast<float>(enemy.width) * 0.5f;
+                float enemyCenterY = enemy.y + static_cast<float>(enemy.height) * 0.5f;
+                float dx = enemyCenterX - grenadeCenterX;
+                float dy = enemyCenterY - grenadeCenterY;
                 float distance = std::sqrt(dx * dx + dy * dy);
 
                 if (distance < radius) {
@@ -617,13 +647,14 @@ void Game::update() {
 
     if (currentPhase >= 1 && player.killCount >= 5) {
         player.hasPistol = true;
-        if (selectedWeapon == WeaponSelection::Melee && player.pistolAmmo > 0) {
-            selectedWeapon = WeaponSelection::Pistol;
-        }
     }
 
     if (currentPhase >= 2 && player.killCount >= 10) {
-        player.hasShotgun = true;
+        if (!player.hasShotgun) {
+            player.hasShotgun = true;
+            player.shotgunAmmo += 6;
+            SDL_Log("Shotgun unlocked. Shotgun ammo: %d", player.shotgunAmmo);
+        }
     }
 
     if (player.isAttacking) {
@@ -821,6 +852,8 @@ void Game::update() {
         }
     }
 
+    bool transitionedThisFrame = false;
+
     const bool reachedPhase2Gate = player.x >= 1400.0f;
     const bool reachedPhase3Gate = player.x >= 2600.0f;
 
@@ -836,6 +869,7 @@ void Game::update() {
         player.dashTimer = 0.0f;
         player.attackTimer = 0.0f;
         spawnEnemiesForPhase();
+        transitionedThisFrame = true;
     }
 
     else if (currentPhase == 2 && (reachedPhase3Gate || allEnemiesDead)) {
@@ -849,9 +883,18 @@ void Game::update() {
         player.dashTimer = 0.0f;
         player.attackTimer = 0.0f;
         spawnEnemiesForPhase();
+        transitionedThisFrame = true;
     }
 
-    if (currentPhase == 3 && allEnemiesDead && !bossSpawnTriggered && !bossActive) {
+    bool phaseEnemiesAlive = false;
+    for (const auto& enemy : enemies) {
+        if (enemy.isAlive) {
+            phaseEnemiesAlive = true;
+            break;
+        }
+    }
+
+    if (currentPhase == 3 && !phaseEnemiesAlive && !bossSpawnTriggered && !bossActive && !transitionedThisFrame) {
         bossSpawnTriggered = true;
         bossSpawnTimer = 2.0f;
     }
@@ -997,6 +1040,13 @@ void Game::render() {
                 fillRect(x, y, w, t);
                 fillRect(x, y + h / 2 - t / 2, w, t);
                 fillRect(x, y + h - t, w, t);
+                break;
+            case 'G':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x, y, t, h);
+                fillRect(x + w / 2, y + h / 2 - t / 2, w / 2, t);
+                fillRect(x + w - t, y + h / 2 - t / 2, t, h / 2 + t / 2);
                 break;
             default:
                 break;
@@ -1249,6 +1299,31 @@ void Game::render() {
     drawPhaseLetter('M', WINDOW_WIDTH - 198, 38, 1);
     drawPhaseLetter('P', WINDOW_WIDTH - 132, 38, 1);
     drawPhaseLetter('S', WINDOW_WIDTH - 66, 38, 1);
+
+    SDL_Rect ammoBack = {WINDOW_WIDTH - 226, 80, 206, 78};
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 180);
+    SDL_RenderFillRect(renderer, &ammoBack);
+
+    SDL_SetRenderDrawColor(renderer, 230, 230, 230, 255);
+    drawWord("AMMO", WINDOW_WIDTH - 208, 84, 1);
+
+    auto drawAmmoPips = [&](int amount, int x, int y, SDL_Color color) {
+        int shown = std::min(amount, 10);
+        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        for (int i = 0; i < shown; ++i) {
+            SDL_Rect pip = {x + i * 10, y, 8, 8};
+            SDL_RenderFillRect(renderer, &pip);
+        }
+    };
+
+    SDL_SetRenderDrawColor(renderer, 210, 210, 210, 255);
+    drawPhaseLetter('P', WINDOW_WIDTH - 208, 104, 1);
+    drawPhaseLetter('S', WINDOW_WIDTH - 208, 122, 1);
+    drawPhaseLetter('G', WINDOW_WIDTH - 208, 140, 1);
+
+    drawAmmoPips(player.pistolAmmo, WINDOW_WIDTH - 188, 108, SDL_Color{180, 210, 255, 255});
+    drawAmmoPips(player.shotgunAmmo, WINDOW_WIDTH - 188, 126, SDL_Color{255, 210, 120, 255});
+    drawAmmoPips(player.grenadeCount, WINDOW_WIDTH - 188, 144, SDL_Color{255, 150, 0, 255});
 
     if (phaseBannerTimer > 0.0f) {
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);

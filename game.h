@@ -41,6 +41,7 @@ private:
         int pistolAmmo;
         int killCount;
         bool hasShotgun;
+        int shotgunAmmo;
         int grenadeCount;
         bool jumpRequested;
     };
