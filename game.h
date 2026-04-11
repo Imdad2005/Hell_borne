@@ -85,6 +85,7 @@ private:
 
     static constexpr int WINDOW_WIDTH = 1280;
     static constexpr int WINDOW_HEIGHT = 720;
+    static constexpr int WORLD_WIDTH = 4600;
 
     SDL_Rect getAttackRect();
     void resetPlayerStateForPhaseStart();
@@ -98,6 +99,10 @@ private:
     bool bossActive;
     bool bossSpawnTriggered;
     float bossSpawnTimer;
+    float cameraX;
+    bool isPaused;
+    float phaseBannerTimer;
+    float controlsHintTimer;
     Player player;
     Boss boss;
     std::vector<Enemy> enemies;

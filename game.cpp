@@ -5,7 +5,7 @@
 #include <cmath>
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 2, false}, boss{900.0f, 0.0f, 120, 120, 100, false} {
+    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 2, false}, boss{900.0f, 0.0f, 120, 120, 100, false} {
 }
 
 void Game::resetPlayerStateForPhaseStart() {
@@ -26,23 +26,24 @@ void Game::resetPlayerStateForPhaseStart() {
 
 void Game::spawnEnemiesForPhase() {
     const float groundY = static_cast<float>(WINDOW_HEIGHT - 50);
+    const float phaseBaseX = static_cast<float>((currentPhase - 1) * 1400);
 
     enemies.clear();
 
     if (currentPhase == 1) {
-        enemies.push_back({600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({800.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
     } else if (currentPhase == 2) {
-        enemies.push_back({600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({800.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
     } else {
-        enemies.push_back({450.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({600.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({750.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({900.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({1050.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 450.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 750.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 900.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1050.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
     }
 }
 
@@ -94,6 +95,11 @@ bool Game::init() {
     grenades.clear();
     enemiesKilledInPhase = 0;
     currentPhase = 1;
+    cameraX = 0.0f;
+    isPaused = false;
+    phaseBannerTimer = 1.5f;
+    controlsHintTimer = 8.0f;
+    SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J or Left Click, Pause P");
     spawnEnemiesForPhase();
     
     player.hasPistol = false;
@@ -133,6 +139,16 @@ void Game::handleEvents() {
                 isRunning = false;
             }
 
+            if (event.key.keysym.sym == SDLK_p) {
+                isPaused = !isPaused;
+                SDL_Log(isPaused ? "Paused" : "Resumed");
+                continue;
+            }
+
+            if (isPaused) {
+                continue;
+            }
+
             if (event.key.keysym.sym == SDLK_j) {
                 if (!player.isAttacking && !player.isDashing && player.attackCooldownTimer <= 0.0f) {
                     player.isAttacking = true;
@@ -141,7 +157,9 @@ void Game::handleEvents() {
                 }
             }
 
-            if (event.key.keysym.sym == SDLK_SPACE && event.key.repeat == 0) {
+            if (event.key.keysym.sym == SDLK_SPACE ||
+                event.key.keysym.sym == SDLK_w ||
+                event.key.keysym.sym == SDLK_UP) {
                 player.jumpRequested = true;
             }
 
@@ -210,7 +228,7 @@ void Game::handleEvents() {
             }
         }
 
-        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+        if (!isPaused && event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
             if (!player.isAttacking && !player.isDashing && player.attackCooldownTimer <= 0.0f) {
                 player.isAttacking = true;
                 player.attackTimer = 0.1f;
@@ -246,6 +264,30 @@ void Game::update() {
     const float dashSpeed = 18.0f;
     const float dashCooldown = 0.5f;
     const float frameSeconds = 1.0f / 60.0f;
+
+    if (phaseBannerTimer > 0.0f) {
+        phaseBannerTimer -= frameSeconds;
+        if (phaseBannerTimer < 0.0f) {
+            phaseBannerTimer = 0.0f;
+        }
+    }
+
+    if (controlsHintTimer > 0.0f) {
+        controlsHintTimer -= frameSeconds;
+        if (controlsHintTimer < 0.0f) {
+            controlsHintTimer = 0.0f;
+        }
+    }
+
+    if (currentPhase == 1 && controlsHintTimer > 0.0f) {
+        SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J or Left Click, Pause P");
+    } else {
+        SDL_SetWindowTitle(window, "Hellborne");
+    }
+
+    if (isPaused) {
+        return;
+    }
 
     const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
 
@@ -312,8 +354,11 @@ void Game::update() {
             player.facingDirection = 1;
         }
 
-        bool jumpPressed = keyboardState[SDL_SCANCODE_SPACE];
-        if ((player.jumpRequested || (jumpPressed && !player.jumpPressedLastFrame)) && player.onGround) {
+        bool jumpPressed = keyboardState[SDL_SCANCODE_SPACE] ||
+                           keyboardState[SDL_SCANCODE_W] ||
+                           keyboardState[SDL_SCANCODE_UP];
+
+        if ((player.jumpRequested || jumpPressed) && player.onGround) {
             player.vy = jumpVelocity;
             player.onGround = false;
         }
@@ -328,8 +373,8 @@ void Game::update() {
     if (player.x < 0.0f) {
         player.x = 0.0f;
     }
-    if (player.x + player.width > WINDOW_WIDTH) {
-        player.x = static_cast<float>(WINDOW_WIDTH - player.width);
+    if (player.x + player.width > WORLD_WIDTH) {
+        player.x = static_cast<float>(WORLD_WIDTH - player.width);
     }
 
     if (player.y < 0.0f) {
@@ -343,6 +388,10 @@ void Game::update() {
         player.vy = 0.0f;
         player.onGround = true;
     }
+
+    const float cameraTarget = player.x + static_cast<float>(player.width) * 0.5f - static_cast<float>(WINDOW_WIDTH) * 0.5f;
+    const float maxCameraX = static_cast<float>(WORLD_WIDTH - WINDOW_WIDTH);
+    cameraX = std::clamp(cameraTarget, 0.0f, maxCameraX);
 
     for (auto& enemy : enemies) {
         if (enemy.isAlive && !player.isDashing) {
@@ -598,21 +647,15 @@ void Game::update() {
     }
 
     if (player.health <= 0) {
-        player.x = 100.0f;
-        player.y = static_cast<float>(WINDOW_HEIGHT - player.height);
-        player.vx = 0.0f;
-        player.vy = 0.0f;
+        resetPlayerStateForPhaseStart();
         player.health = 100;
-        player.isDashing = false;
-        player.isAttacking = false;
-        player.onGround = true;
-        player.dashCooldownTimer = 0.0f;
-        player.attackCooldownTimer = 0.0f;
         player.damageCooldownTimer = 0.0f;
         projectiles.clear();
         grenades.clear();
         currentPhase = 1;
         enemiesKilledInPhase = 0;
+        cameraX = 0.0f;
+        controlsHintTimer = 8.0f;
         bossActive = false;
         bossSpawnTriggered = false;
         bossSpawnTimer = 0.0f;
@@ -629,20 +672,30 @@ void Game::update() {
         }
     }
 
-    if (currentPhase == 1 && allEnemiesDead) {
+    if (currentPhase == 1 && player.x >= 1400.0f) {
         currentPhase = 2;
         enemiesKilledInPhase = 0;
         player.grenadeCount += 1;
+        phaseBannerTimer = 1.5f;
+        controlsHintTimer = 0.0f;
         SDL_Log("Phase: %d", currentPhase);
-        resetPlayerStateForPhaseStart();
+        player.isDashing = false;
+        player.isAttacking = false;
+        player.dashTimer = 0.0f;
+        player.attackTimer = 0.0f;
         spawnEnemiesForPhase();
     }
 
-    if (currentPhase == 2 && allEnemiesDead) {
+    if (currentPhase == 2 && player.x >= 2800.0f) {
         currentPhase = 3;
         enemiesKilledInPhase = 0;
+        phaseBannerTimer = 1.5f;
+        controlsHintTimer = 0.0f;
         SDL_Log("Phase: %d", currentPhase);
-        resetPlayerStateForPhaseStart();
+        player.isDashing = false;
+        player.isAttacking = false;
+        player.dashTimer = 0.0f;
+        player.attackTimer = 0.0f;
         spawnEnemiesForPhase();
     }
 
@@ -673,7 +726,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     SDL_Rect playerRect = {
-        static_cast<int>(player.x),
+        static_cast<int>(player.x - cameraX),
         static_cast<int>(player.y),
         player.width,
         player.height
@@ -684,7 +737,7 @@ void Game::render() {
     for (const auto& enemy : enemies) {
         if (enemy.isAlive) {
             SDL_Rect enemyRect = {
-                static_cast<int>(enemy.x),
+                static_cast<int>(enemy.x - cameraX),
                 static_cast<int>(enemy.y),
                 enemy.width,
                 enemy.height
@@ -704,6 +757,7 @@ void Game::render() {
 
     if (player.isAttacking) {
         SDL_Rect attackRect = getAttackRect();
+        attackRect.x -= static_cast<int>(cameraX);
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(renderer, &attackRect);
@@ -715,7 +769,7 @@ void Game::render() {
         }
 
         SDL_Rect projectileRect = {
-            static_cast<int>(p.x),
+            static_cast<int>(p.x - cameraX),
             static_cast<int>(p.y),
             p.width,
             p.height
@@ -730,7 +784,7 @@ void Game::render() {
         }
 
         SDL_Rect rect = {
-            static_cast<int>(g.x),
+            static_cast<int>(g.x - cameraX),
             static_cast<int>(g.y),
             10,
             10
@@ -742,7 +796,7 @@ void Game::render() {
 
     if (bossActive && boss.isAlive) {
         SDL_Rect bossRect = {
-            static_cast<int>(boss.x),
+            static_cast<int>(boss.x - cameraX),
             static_cast<int>(boss.y),
             boss.width,
             boss.height
@@ -750,6 +804,45 @@ void Game::render() {
 
         SDL_SetRenderDrawColor(renderer, 200, 0, 200, 255);
         SDL_RenderFillRect(renderer, &bossRect);
+    }
+
+    SDL_Rect phaseBack = {20, 20, 180, 26};
+    SDL_SetRenderDrawColor(renderer, 30, 30, 30, 220);
+    SDL_RenderFillRect(renderer, &phaseBack);
+
+    for (int i = 1; i <= 3; ++i) {
+        SDL_Rect cell = {24 + (i - 1) * 58, 24, 52, 18};
+        if (i <= currentPhase) {
+            SDL_SetRenderDrawColor(renderer, 230, 70, 70, 255);
+            SDL_RenderFillRect(renderer, &cell);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
+            SDL_RenderFillRect(renderer, &cell);
+        }
+    }
+
+    if (phaseBannerTimer > 0.0f) {
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_Rect banner = {WINDOW_WIDTH / 2 - 220, 52, 440, 54};
+        SDL_SetRenderDrawColor(renderer, 230, 70, 70, 170);
+        SDL_RenderFillRect(renderer, &banner);
+
+        SDL_Rect notch = {WINDOW_WIDTH / 2 - 20 + (currentPhase - 1) * 14, 64, 40, 30};
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 220);
+        SDL_RenderFillRect(renderer, &notch);
+    }
+
+    if (isPaused) {
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150);
+        SDL_Rect overlay = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+        SDL_RenderFillRect(renderer, &overlay);
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_Rect leftBar = {WINDOW_WIDTH / 2 - 28, WINDOW_HEIGHT / 2 - 45, 18, 90};
+        SDL_Rect rightBar = {WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT / 2 - 45, 18, 90};
+        SDL_RenderFillRect(renderer, &leftBar);
+        SDL_RenderFillRect(renderer, &rightBar);
     }
 
     SDL_RenderPresent(renderer);
