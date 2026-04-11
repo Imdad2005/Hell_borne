@@ -22,14 +22,15 @@ FRAME_FILES = [
 
 OUTPUT_FILE   = "player_sheet_3.png"   # output sprite sheet name
 FRAME_SIZE    = (96, 96)               # each frame will be resized to this (w x h)
-BLACK_THRESH  = 30                     # 0-255, pixels darker than this become transparent
+BLACK_THRESH  = 30                     # legacy black-threshold support
+BG_TOLERANCE  = 22                     # 0-255, corner-color tolerance for auto background removal
 # ─────────────────────────────────────────────────────────────────────────────
 
 DEFAULT_PATTERN = "ezgif-frame-*.*"
 
 
 def remove_black_bg(img: Image.Image, threshold: int) -> Image.Image:
-    """Convert near-black pixels to transparent."""
+    """Convert near-black pixels to transparent (legacy mode)."""
     img = img.convert("RGBA")
     pixels = img.load()
     width, height = img.size
@@ -38,6 +39,26 @@ def remove_black_bg(img: Image.Image, threshold: int) -> Image.Image:
             r, g, b, a = pixels[x, y]
             if r < threshold and g < threshold and b < threshold:
                 pixels[x, y] = (0, 0, 0, 0)   # fully transparent
+    return img
+
+
+def remove_bg_by_corner(img: Image.Image, tolerance: int) -> Image.Image:
+    """Remove a mostly uniform matte color by sampling the top-left pixel."""
+    img = img.convert("RGBA")
+    pixels = img.load()
+    width, height = img.size
+
+    cr, cg, cb, _ = pixels[0, 0]
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
+            if (abs(r - cr) <= tolerance and
+                abs(g - cg) <= tolerance and
+                abs(b - cb) <= tolerance):
+                pixels[x, y] = (0, 0, 0, 0)
+            else:
+                pixels[x, y] = (r, g, b, a)
     return img
 
 
@@ -82,6 +103,7 @@ def build_spritesheet(
     output_file: Path,
     frame_size: tuple[int, int],
     black_thresh: int,
+    bg_tolerance: int,
     remove_black: bool,
 ) -> int:
     frames: list[Image.Image] = []
@@ -91,6 +113,8 @@ def build_spritesheet(
             img = Image.open(p)
             img = img.resize(frame_size, Image.LANCZOS)
             if remove_black:
+                # Use corner-color keying first; fall back to black threshold for dark mattes.
+                img = remove_bg_by_corner(img, bg_tolerance)
                 img = remove_black_bg(img, black_thresh)
             else:
                 img = img.convert("RGBA")
@@ -139,6 +163,11 @@ def main():
         default=BLACK_THRESH,
         help="Black background threshold (0-255)")
     parser.add_argument(
+        "--bg-tolerance",
+        type=int,
+        default=BG_TOLERANCE,
+        help="Tolerance for corner-color matte removal (0-255)")
+    parser.add_argument(
         "--pattern",
         default=DEFAULT_PATTERN,
         help="Glob pattern used when explicit frame list is missing")
@@ -161,6 +190,7 @@ def main():
         return 1
 
     threshold = max(0, min(255, int(args.threshold)))
+    bg_tolerance = max(0, min(255, int(args.bg_tolerance)))
     input_dir = Path(args.input_dir).expanduser().resolve()
 
     if not input_dir.exists() or not input_dir.is_dir():
@@ -175,11 +205,12 @@ def main():
 
     output_path = Path(args.output)
     if not output_path.is_absolute():
-        output_path = input_dir / output_path
+        output_path = (Path.cwd() / output_path).resolve()
 
     print(f"Input dir:   {input_dir}")
     print(f"Frame count: {len(frame_paths)}")
     print(f"Frame size:  {frame_size[0]}x{frame_size[1]}")
+    print(f"BG tol:      {bg_tolerance}")
     print(f"Output:      {output_path}")
 
     return build_spritesheet(
@@ -187,6 +218,7 @@ def main():
         output_file=output_path,
         frame_size=frame_size,
         black_thresh=threshold,
+        bg_tolerance=bg_tolerance,
         remove_black=not args.no_remove_black,
     )
 

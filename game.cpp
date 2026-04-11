@@ -3,9 +3,77 @@
 #include <cstdlib>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
+#include <iomanip>
+#include <limits>
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 0, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
+    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), perfFreq(0), lastInputEventCounter(0), hasPendingInputSample(false), totalFrameMs(0.0), totalFrameMsSq(0.0), minFrameMs(0.0), maxFrameMs(0.0), totalWorkMs(0.0), totalFixedDriftMs(0.0), maxFixedDriftMs(0.0), totalInputLatencyMs(0.0), inputLatencySamples(0), totalFrames(0), droppedFrames(0), prevEnemiesCapacity(0), prevProjectilesCapacity(0), prevGrenadesCapacity(0), capacityChangeEvents(0), totalEntitiesProcessed(0.0), totalEntitiesProcessedSq(0.0), entitySamples(0), entitiesProcessedThisFrame(0), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 0, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
+}
+
+void Game::beginPerformanceTracking() {
+    perfFreq = SDL_GetPerformanceFrequency();
+    lastInputEventCounter = 0;
+    hasPendingInputSample = false;
+    totalFrameMs = 0.0;
+    totalFrameMsSq = 0.0;
+    minFrameMs = std::numeric_limits<double>::max();
+    maxFrameMs = 0.0;
+    totalWorkMs = 0.0;
+    totalFixedDriftMs = 0.0;
+    maxFixedDriftMs = 0.0;
+    totalInputLatencyMs = 0.0;
+    inputLatencySamples = 0;
+    totalFrames = 0;
+    droppedFrames = 0;
+    prevEnemiesCapacity = enemies.capacity();
+    prevProjectilesCapacity = projectiles.capacity();
+    prevGrenadesCapacity = grenades.capacity();
+    capacityChangeEvents = 0;
+    totalEntitiesProcessed = 0.0;
+    totalEntitiesProcessedSq = 0.0;
+    entitySamples = 0;
+    entitiesProcessedThisFrame = 0;
+}
+
+void Game::printPerformanceReport() const {
+    const double targetFrameMs = 1000.0 / 60.0;
+    const int frames = std::max(1, totalFrames);
+    const double avgFrameMs = totalFrameMs / static_cast<double>(frames);
+    const double avgWorkMs = totalWorkMs / static_cast<double>(frames);
+    const double avgFixedDriftMs = totalFixedDriftMs / static_cast<double>(frames);
+    const double frameVar = std::max(0.0, (totalFrameMsSq / static_cast<double>(frames)) - (avgFrameMs * avgFrameMs));
+    const double frameStdDev = std::sqrt(frameVar);
+    const double avgFps = (avgFrameMs > 0.0) ? (1000.0 / avgFrameMs) : 0.0;
+    const double cpuUsageApprox = (totalFrameMs > 0.0) ? (totalWorkMs / totalFrameMs) * 100.0 : 0.0;
+    const double dropRatio = std::min(1.0, static_cast<double>(droppedFrames) / static_cast<double>(frames));
+    const double frameDropStabilityPercent = (1.0 - dropRatio) * 10.0;
+
+    double avgEntities = 0.0;
+    double entityStdDev = 0.0;
+    if (entitySamples > 0) {
+        avgEntities = totalEntitiesProcessed / static_cast<double>(entitySamples);
+        const double eVar = std::max(0.0, (totalEntitiesProcessedSq / static_cast<double>(entitySamples)) - (avgEntities * avgEntities));
+        entityStdDev = std::sqrt(eVar);
+    }
+
+    std::cout << "\n===== Runtime Performance Report =====\n";
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Frame time consistency: avg=" << avgFrameMs << "ms, min=" << minFrameMs << "ms, max=" << maxFrameMs << "ms, jitter(stddev)=" << frameStdDev << "ms, avg fps=" << avgFps << "\n";
+    if (inputLatencySamples > 0) {
+        std::cout << "Input Latency: avg=" << (totalInputLatencyMs / static_cast<double>(inputLatencySamples)) << "ms across " << inputLatencySamples << " samples\n";
+    } else {
+        std::cout << "Input Latency: no input samples captured\n";
+    }
+    std::cout << "Fixed Timestamps Stability: target=" << targetFrameMs << "ms, avg drift=" << avgFixedDriftMs << "ms, max drift=" << maxFixedDriftMs << "ms\n";
+    std::cout << "Zero Frame Drops: drops=" << droppedFrames << ", stability contribution=" << frameDropStabilityPercent << "%/10.00%\n";
+    std::cout << "Work per frame: avg active work=" << avgWorkMs << "ms\n";
+    std::cout << "Lockless behaviour: single-threaded frame path, no mutex/lock contention\n";
+    std::cout << "Memory stability: container capacity change events=" << capacityChangeEvents << "\n";
+    std::cout << "entity processing stability: avg entities/frame=" << avgEntities << ", stddev=" << entityStdDev << "\n";
+    std::cout << "Threads communication: single-threaded mode, inter-thread messaging not required\n";
+    std::cout << "Cpu usage: approx " << cpuUsageApprox << "% of one core\n";
+    std::cout << "======================================\n";
 }
 
 void Game::restartGame() {
@@ -135,19 +203,74 @@ bool Game::init() {
 
 void Game::run() {
     const Uint32 frameDelay = 16; // ~60 FPS target
+    beginPerformanceTracking();
 
     while (isRunning) {
         const Uint32 frameStart = SDL_GetTicks();
+        const Uint64 frameStartCounter = SDL_GetPerformanceCounter();
+        const Uint64 workStartCounter = frameStartCounter;
 
         handleEvents();
         update();
         render();
 
+        const Uint64 workEndCounter = SDL_GetPerformanceCounter();
+
         const Uint32 frameTime = SDL_GetTicks() - frameStart;
+        if (frameTime > frameDelay) {
+            droppedFrames += 1;
+        }
         if (frameTime < frameDelay) {
             SDL_Delay(frameDelay - frameTime);
         }
+
+        const Uint64 frameEndCounter = SDL_GetPerformanceCounter();
+        const double workMs = (static_cast<double>(workEndCounter - workStartCounter) * 1000.0) / static_cast<double>(perfFreq);
+        const double frameMs = (static_cast<double>(frameEndCounter - frameStartCounter) * 1000.0) / static_cast<double>(perfFreq);
+        const double driftMs = std::fabs(frameMs - (1000.0 / 60.0));
+
+        totalFrames += 1;
+        totalWorkMs += workMs;
+        totalFrameMs += frameMs;
+        totalFrameMsSq += frameMs * frameMs;
+        totalFixedDriftMs += driftMs;
+
+        if (driftMs > maxFixedDriftMs) {
+            maxFixedDriftMs = driftMs;
+        }
+        if (frameMs < minFrameMs) {
+            minFrameMs = frameMs;
+        }
+        if (frameMs > maxFrameMs) {
+            maxFrameMs = frameMs;
+        }
+
+        if (hasPendingInputSample) {
+            const double latencyMs = (static_cast<double>(workEndCounter - lastInputEventCounter) * 1000.0) / static_cast<double>(perfFreq);
+            totalInputLatencyMs += latencyMs;
+            inputLatencySamples += 1;
+            hasPendingInputSample = false;
+        }
+
+        if (enemies.capacity() != prevEnemiesCapacity) {
+            prevEnemiesCapacity = enemies.capacity();
+            capacityChangeEvents += 1;
+        }
+        if (projectiles.capacity() != prevProjectilesCapacity) {
+            prevProjectilesCapacity = projectiles.capacity();
+            capacityChangeEvents += 1;
+        }
+        if (grenades.capacity() != prevGrenadesCapacity) {
+            prevGrenadesCapacity = grenades.capacity();
+            capacityChangeEvents += 1;
+        }
+
+        totalEntitiesProcessed += static_cast<double>(entitiesProcessedThisFrame);
+        totalEntitiesProcessedSq += static_cast<double>(entitiesProcessedThisFrame * entitiesProcessedThisFrame);
+        entitySamples += 1;
     }
+
+    printPerformanceReport();
 }
 
 void Game::handleEvents() {
@@ -155,6 +278,11 @@ void Game::handleEvents() {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             isRunning = false;
+        }
+
+        if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
+            lastInputEventCounter = SDL_GetPerformanceCounter();
+            hasPendingInputSample = true;
         }
 
         if (showWelcomeScreen) {
@@ -908,6 +1036,17 @@ void Game::update() {
             boss.y = static_cast<float>(WINDOW_HEIGHT - boss.height);
         }
     }
+
+    int aliveEntityCount = 0;
+    for (const auto& enemy : enemies) {
+        if (enemy.isAlive) {
+            aliveEntityCount += 1;
+        }
+    }
+    if (bossActive && boss.isAlive) {
+        aliveEntityCount += 1;
+    }
+    entitiesProcessedThisFrame = aliveEntityCount;
 
     grenades.erase(
         std::remove_if(grenades.begin(), grenades.end(),

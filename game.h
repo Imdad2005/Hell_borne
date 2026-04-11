@@ -100,6 +100,8 @@ private:
     SDL_Rect getQuitButtonRect() const;
     bool isPointInRect(int x, int y, const SDL_Rect& rect) const;
     void restartGame();
+    void beginPerformanceTracking();
+    void printPerformanceReport() const;
     void resetPlayerStateForPhaseStart();
     void spawnEnemiesForPhase();
     void handleWeaponInput(const SDL_Event& event);
@@ -125,6 +127,33 @@ private:
     float phaseBannerTimer;
     float controlsHintTimer;
     WeaponSelection selectedWeapon;
+
+    Uint64 perfFreq;
+    Uint64 lastInputEventCounter;
+    bool hasPendingInputSample;
+
+    double totalFrameMs;
+    double totalFrameMsSq;
+    double minFrameMs;
+    double maxFrameMs;
+    double totalWorkMs;
+    double totalFixedDriftMs;
+    double maxFixedDriftMs;
+    double totalInputLatencyMs;
+    int inputLatencySamples;
+    int totalFrames;
+    int droppedFrames;
+
+    size_t prevEnemiesCapacity;
+    size_t prevProjectilesCapacity;
+    size_t prevGrenadesCapacity;
+    int capacityChangeEvents;
+
+    double totalEntitiesProcessed;
+    double totalEntitiesProcessedSq;
+    int entitySamples;
+    int entitiesProcessedThisFrame;
+
     Player player;
     Boss boss;
     std::vector<Enemy> enemies;
