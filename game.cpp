@@ -5,7 +5,40 @@
 #include <cmath>
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 2, false}, boss{900.0f, 0.0f, 120, 120, 100, false} {
+    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
+}
+
+void Game::restartGame() {
+    resetPlayerStateForPhaseStart();
+
+    player.health = 100;
+    player.damageCooldownTimer = 0.0f;
+    player.hasPistol = false;
+    player.hasShotgun = false;
+    player.pistolAmmo = 0;
+    player.killCount = 0;
+    player.grenadeCount = 2;
+
+    projectiles.clear();
+    grenades.clear();
+
+    currentPhase = 1;
+    enemiesKilledInPhase = 0;
+    cameraX = 0.0f;
+    isPaused = false;
+    showWelcomeScreen = false;
+    isGameOver = false;
+    isVictory = false;
+    phaseBannerTimer = 1.5f;
+    controlsHintTimer = 8.0f;
+    selectedWeapon = WeaponSelection::Melee;
+
+    bossActive = false;
+    bossSpawnTriggered = false;
+    bossSpawnTimer = 0.0f;
+    boss = {900.0f, 0.0f, 120, 120, 35, 35, false};
+
+    spawnEnemiesForPhase();
 }
 
 void Game::resetPlayerStateForPhaseStart() {
@@ -39,11 +72,18 @@ void Game::spawnEnemiesForPhase() {
         enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
         enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
     } else {
-        enemies.push_back({phaseBaseX + 450.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 750.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 900.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 1050.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 350.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 500.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 650.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 950.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1100.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1250.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1400.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1550.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1700.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1850.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 2000.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
     }
 }
 
@@ -84,27 +124,9 @@ bool Game::init() {
         return false;
     }
 
-    resetPlayerStateForPhaseStart();
-
-    bossActive = false;
-    bossSpawnTriggered = false;
-    bossSpawnTimer = 0.0f;
-    boss = {900.0f, 0.0f, 120, 120, 50, false};
-
-    projectiles.clear();
-    grenades.clear();
-    enemiesKilledInPhase = 0;
-    currentPhase = 1;
-    cameraX = 0.0f;
-    isPaused = false;
-    phaseBannerTimer = 1.5f;
-    controlsHintTimer = 8.0f;
-    SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J or Left Click, Pause P");
-    spawnEnemiesForPhase();
-    
-    player.hasPistol = false;
-    player.hasShotgun = false;
-    player.grenadeCount = 2;
+    restartGame();
+    showWelcomeScreen = true;
+    SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J/Left Click, Switch 1/2/3, Pause P");
 
     isRunning = true;
     return true;
@@ -134,6 +156,35 @@ void Game::handleEvents() {
             isRunning = false;
         }
 
+        if (showWelcomeScreen) {
+            if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
+                showWelcomeScreen = false;
+            }
+            continue;
+        }
+
+        if (isGameOver || isVictory) {
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_r) {
+                    restartGame();
+                } else if (event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE) {
+                    isRunning = false;
+                }
+            }
+
+            if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+                int mouseX = event.button.x;
+                int mouseY = event.button.y;
+
+                if (isPointInRect(mouseX, mouseY, getRetryButtonRect())) {
+                    restartGame();
+                } else if (isPointInRect(mouseX, mouseY, getQuitButtonRect())) {
+                    isRunning = false;
+                }
+            }
+            continue;
+        }
+
         if (event.type == SDL_KEYDOWN) {
             if (event.key.keysym.sym == SDLK_ESCAPE) {
                 isRunning = false;
@@ -147,14 +198,6 @@ void Game::handleEvents() {
 
             if (isPaused) {
                 continue;
-            }
-
-            if (event.key.keysym.sym == SDLK_j) {
-                if (!player.isAttacking && !player.isDashing && player.attackCooldownTimer <= 0.0f) {
-                    player.isAttacking = true;
-                    player.attackTimer = 0.1f;
-                    player.attackCooldownTimer = 0.2f;
-                }
             }
 
             if (event.key.keysym.sym == SDLK_SPACE ||
@@ -181,59 +224,10 @@ void Game::handleEvents() {
                 }
             }
 
-            if (event.key.keysym.sym == SDLK_k) {
-                if (player.hasPistol && player.pistolAmmo > 0) {
-                    Projectile p;
-                    p.isActive = true;
-                    p.direction = player.facingDirection >= 0 ? 1 : -1;
-                    p.speed = 12.0f;
-                    p.width = 12;
-                    p.height = 6;
-                    p.x = (p.direction > 0) ? player.x + player.width : player.x - p.width;
-                    p.y = player.y + player.height / 2.0f - p.height / 2.0f;
-                    projectiles.push_back(p);
-                    player.pistolAmmo -= 1;
-                    SDL_Log("Pistol ammo: %d", player.pistolAmmo);
-                }
-            }
-
-            if (event.key.keysym.sym == SDLK_l) {
-                if (player.hasShotgun) {
-                    for (int i = -2; i <= 2; ++i) {
-                        Projectile p;
-                        p.isActive = true;
-                        p.direction = player.facingDirection >= 0 ? 1 : -1;
-                        p.speed = 10.0f;
-                        p.width = 10;
-                        p.height = 5;
-                        p.x = (p.direction > 0) ? player.x + player.width : player.x - p.width;
-                        p.y = player.y + player.height / 2 + i * 6;
-                        projectiles.push_back(p);
-                    }
-                }
-            }
-
-            if (event.key.keysym.sym == SDLK_g) {
-                if (player.grenadeCount > 0) {
-                    Grenade g;
-                    g.x = player.x;
-                    g.y = player.y;
-                    g.timer = 1.0f;
-                    g.isActive = true;
-
-                    grenades.push_back(g);
-
-                    player.grenadeCount--;
-                }
-            }
         }
 
-        if (!isPaused && event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-            if (!player.isAttacking && !player.isDashing && player.attackCooldownTimer <= 0.0f) {
-                player.isAttacking = true;
-                player.attackTimer = 0.1f;
-                player.attackCooldownTimer = 0.2f;
-            }
+        if (!isPaused) {
+            handleWeaponInput(event);
         }
     }
 }
@@ -255,6 +249,322 @@ SDL_Rect Game::getAttackRect() {
     }
 
     return attackRect;
+}
+
+SDL_Rect Game::getRetryButtonRect() const {
+    return SDL_Rect{WINDOW_WIDTH / 2 - 170, WINDOW_HEIGHT / 2 + 92, 150, 44};
+}
+
+SDL_Rect Game::getQuitButtonRect() const {
+    return SDL_Rect{WINDOW_WIDTH / 2 + 20, WINDOW_HEIGHT / 2 + 92, 150, 44};
+}
+
+bool Game::isPointInRect(int x, int y, const SDL_Rect& rect) const {
+    return x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h;
+}
+
+void Game::handleWeaponInput(const SDL_Event& event) {
+    if (event.type == SDL_KEYDOWN) {
+        if (event.key.keysym.sym == SDLK_1) {
+            selectedWeapon = WeaponSelection::Melee;
+        }
+
+        if (event.key.keysym.sym == SDLK_2 && player.hasPistol) {
+            selectedWeapon = WeaponSelection::Pistol;
+        }
+
+        if (event.key.keysym.sym == SDLK_3 && player.hasShotgun) {
+            selectedWeapon = WeaponSelection::Shotgun;
+        }
+
+        if (event.key.keysym.sym == SDLK_q) {
+            if (selectedWeapon == WeaponSelection::Melee) {
+                selectedWeapon = player.hasPistol ? WeaponSelection::Pistol : WeaponSelection::Melee;
+            } else if (selectedWeapon == WeaponSelection::Pistol) {
+                selectedWeapon = player.hasShotgun ? WeaponSelection::Shotgun : WeaponSelection::Melee;
+            } else {
+                selectedWeapon = WeaponSelection::Melee;
+            }
+        }
+
+        if (event.key.keysym.sym == SDLK_j) {
+            performSelectedAttack();
+        }
+
+        if (event.key.keysym.sym == SDLK_g) {
+            if (player.grenadeCount > 0) {
+                Grenade g;
+                g.x = player.x + player.width / 2.0f;
+                g.y = player.y + player.height / 2.0f;
+                g.vx = 6.0f * static_cast<float>(player.facingDirection);
+                g.vy = -9.0f;
+                g.timer = 1.4f;
+                g.isActive = true;
+                g.bounceCount = 0;
+                grenades.push_back(g);
+                player.grenadeCount--;
+            }
+        }
+    }
+
+    if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+        performSelectedAttack();
+    }
+}
+
+void Game::performSelectedAttack() {
+    if (player.isDashing || player.attackCooldownTimer > 0.0f) {
+        return;
+    }
+
+    if (selectedWeapon == WeaponSelection::Melee) {
+        player.isAttacking = true;
+        player.attackTimer = 0.1f;
+        player.attackCooldownTimer = 0.2f;
+        return;
+    }
+
+    if (selectedWeapon == WeaponSelection::Pistol) {
+        if (!player.hasPistol || player.pistolAmmo <= 0) {
+            return;
+        }
+
+        Projectile p;
+        p.isActive = true;
+        p.direction = player.facingDirection >= 0 ? 1 : -1;
+        p.speed = 12.0f;
+        p.width = 12;
+        p.height = 6;
+        p.x = (p.direction > 0) ? player.x + player.width : player.x - p.width;
+        p.y = player.y + player.height / 2.0f - p.height / 2.0f;
+        projectiles.push_back(p);
+        player.pistolAmmo -= 1;
+        player.attackCooldownTimer = 0.12f;
+        SDL_Log("Pistol ammo: %d", player.pistolAmmo);
+        return;
+    }
+
+    if (!player.hasShotgun) {
+        return;
+    }
+
+    for (int i = -2; i <= 2; ++i) {
+        Projectile p;
+        p.isActive = true;
+        p.direction = player.facingDirection >= 0 ? 1 : -1;
+        p.speed = 10.0f;
+        p.width = 10;
+        p.height = 5;
+        p.x = (p.direction > 0) ? player.x + player.width : player.x - p.width;
+        p.y = player.y + player.height / 2 + i * 6;
+        projectiles.push_back(p);
+    }
+    player.attackCooldownTimer = 0.35f;
+}
+
+void Game::applyEnemyDamage(Enemy& enemy, int damage, bool triggerRage) {
+    if (!enemy.isAlive || damage <= 0) {
+        return;
+    }
+
+    enemy.health -= damage;
+
+    if (enemy.type == Enemy::EnemyType::Medium && triggerRage) {
+        enemy.isRaging = true;
+        enemy.rageTimer = 1.5f;
+    }
+
+    if (enemy.health <= 0) {
+        enemy.health = 0;
+        enemy.isAlive = false;
+        player.killCount += 1;
+        enemiesKilledInPhase += 1;
+
+        if (player.killCount % 3 == 0) {
+            player.pistolAmmo += 3;
+        } else if (std::rand() % 3 == 0) {
+            player.pistolAmmo += 1;
+        }
+    }
+}
+
+void Game::applyMeleeDamage() {
+    if (player.isAttacking) {
+        for (auto& enemy : enemies) {
+            if (!enemy.isAlive) {
+                continue;
+            }
+
+            SDL_Rect attackRect = getAttackRect();
+            SDL_Rect enemyRect = {
+                static_cast<int>(enemy.x),
+                static_cast<int>(enemy.y),
+                enemy.width,
+                enemy.height
+            };
+
+            bool overlaps = attackRect.x < enemyRect.x + enemyRect.w &&
+                            attackRect.x + attackRect.w > enemyRect.x &&
+                            attackRect.y < enemyRect.y + enemyRect.h &&
+                            attackRect.y + attackRect.h > enemyRect.y;
+
+            if (overlaps) {
+                applyEnemyDamage(enemy, 1, true);
+            }
+        }
+    }
+
+    if (player.isAttacking && bossActive && boss.isAlive) {
+        SDL_Rect attackRect = getAttackRect();
+
+        SDL_Rect bossRect = {
+            static_cast<int>(boss.x),
+            static_cast<int>(boss.y),
+            boss.width,
+            boss.height
+        };
+
+        bool overlaps = attackRect.x < bossRect.x + bossRect.w &&
+                        attackRect.x + attackRect.w > bossRect.x &&
+                        attackRect.y < bossRect.y + bossRect.h &&
+                        attackRect.y + attackRect.h > bossRect.y;
+
+        if (overlaps) {
+            boss.health -= 1;
+        }
+    }
+}
+
+void Game::updateProjectiles() {
+    for (auto& p : projectiles) {
+        if (!p.isActive) {
+            continue;
+        }
+
+        p.x += p.speed * static_cast<float>(p.direction);
+
+        if (p.x < 0.0f || p.x > WORLD_WIDTH) {
+            p.isActive = false;
+            continue;
+        }
+
+        SDL_Rect projectileRect = {
+            static_cast<int>(p.x),
+            static_cast<int>(p.y),
+            p.width,
+            p.height
+        };
+
+        for (auto& enemy : enemies) {
+            if (!enemy.isAlive) {
+                continue;
+            }
+
+            SDL_Rect enemyRect = {
+                static_cast<int>(enemy.x),
+                static_cast<int>(enemy.y),
+                enemy.width,
+                enemy.height
+            };
+
+            bool overlaps = projectileRect.x < enemyRect.x + enemyRect.w &&
+                            projectileRect.x + projectileRect.w > enemyRect.x &&
+                            projectileRect.y < enemyRect.y + enemyRect.h &&
+                            projectileRect.y + projectileRect.h > enemyRect.y;
+
+            if (overlaps) {
+                applyEnemyDamage(enemy, 1, true);
+                p.isActive = false;
+                break;
+            }
+        }
+
+        if (bossActive && boss.isAlive) {
+            SDL_Rect bossRect = {
+                static_cast<int>(boss.x),
+                static_cast<int>(boss.y),
+                boss.width,
+                boss.height
+            };
+
+            bool overlaps = projectileRect.x < bossRect.x + bossRect.w &&
+                            projectileRect.x + projectileRect.w > bossRect.x &&
+                            projectileRect.y < bossRect.y + bossRect.h &&
+                            projectileRect.y + projectileRect.h > bossRect.y;
+
+            if (overlaps) {
+                boss.health -= 1;
+                p.isActive = false;
+            }
+        }
+    }
+}
+
+void Game::updateGrenades(float frameSeconds) {
+    for (auto& g : grenades) {
+        if (!g.isActive) {
+            continue;
+        }
+
+        const float grenadeGravity = 16.0f;
+        g.vy += grenadeGravity * frameSeconds;
+        g.x += g.vx * frameSeconds * 60.0f;
+        g.y += g.vy * frameSeconds * 60.0f;
+        g.timer -= frameSeconds;
+
+        const float groundY = static_cast<float>(WINDOW_HEIGHT - 10);
+
+        if (g.y >= groundY) {
+            g.y = groundY;
+            g.vy = -g.vy * 0.45f;
+            g.vx *= 0.78f;
+            g.bounceCount += 1;
+
+            if (std::fabs(g.vy) < 1.5f || g.bounceCount >= 2) {
+                g.timer = 0.0f;
+            }
+        }
+
+        if (g.x < 0.0f) {
+            g.x = 0.0f;
+            g.vx = -g.vx * 0.5f;
+        }
+
+        if (g.x > WORLD_WIDTH) {
+            g.x = WORLD_WIDTH;
+            g.vx = -g.vx * 0.5f;
+        }
+
+        if (g.timer <= 0.0f) {
+            const float radius = 100.0f;
+
+            if (bossActive && boss.isAlive) {
+                float dx = boss.x - g.x;
+                float dy = boss.y - g.y;
+                float distance = std::sqrt(dx * dx + dy * dy);
+
+                if (distance < radius) {
+                    boss.health -= 5;
+                }
+            }
+
+            for (auto& enemy : enemies) {
+                if (!enemy.isAlive) {
+                    continue;
+                }
+
+                float dx = enemy.x - g.x;
+                float dy = enemy.y - g.y;
+                float distance = std::sqrt(dx * dx + dy * dy);
+
+                if (distance < radius) {
+                    applyEnemyDamage(enemy, 2, true);
+                }
+            }
+
+            g.isActive = false;
+        }
+    }
 }
 
 void Game::update() {
@@ -280,12 +590,12 @@ void Game::update() {
     }
 
     if (currentPhase == 1 && controlsHintTimer > 0.0f) {
-        SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J or Left Click, Pause P");
+        SDL_SetWindowTitle(window, "Hellborne - Phase 1: Move A/D, Jump SPACE/W/UP, Attack J/Left Click, Switch 1/2/3, Pause P");
     } else {
         SDL_SetWindowTitle(window, "Hellborne");
     }
 
-    if (isPaused) {
+    if (showWelcomeScreen || isPaused || isGameOver || isVictory) {
         return;
     }
 
@@ -307,6 +617,9 @@ void Game::update() {
 
     if (currentPhase >= 1 && player.killCount >= 5) {
         player.hasPistol = true;
+        if (selectedWeapon == WeaponSelection::Melee && player.pistolAmmo > 0) {
+            selectedWeapon = WeaponSelection::Pistol;
+        }
     }
 
     if (currentPhase >= 2 && player.killCount >= 10) {
@@ -393,30 +706,6 @@ void Game::update() {
     const float maxCameraX = static_cast<float>(WORLD_WIDTH - WINDOW_WIDTH);
     cameraX = std::clamp(cameraTarget, 0.0f, maxCameraX);
 
-    auto applyEnemyDamage = [&](Enemy& enemy, int damage, bool triggerRage) {
-        if (!enemy.isAlive || damage <= 0) {
-            return;
-        }
-
-        enemy.health -= damage;
-
-        if (enemy.type == Enemy::EnemyType::Medium && triggerRage) {
-            enemy.isRaging = true;
-            enemy.rageTimer = 1.5f;
-        }
-
-        if (enemy.health <= 0) {
-            enemy.health = 0;
-            enemy.isAlive = false;
-            player.killCount += 1;
-            enemiesKilledInPhase += 1;
-
-            if (std::rand() % 2 == 0) {
-                player.pistolAmmo += 2;
-            }
-        }
-    };
-
     for (auto& enemy : enemies) {
         if (enemy.isAlive && !player.isDashing) {
             float currentSpeed = enemy.speed;
@@ -468,148 +757,9 @@ void Game::update() {
         }
     }
 
-    for (auto& enemy : enemies) {
-        if (player.isAttacking && enemy.isAlive) {
-            SDL_Rect attackRect = getAttackRect();
-
-            SDL_Rect enemyRect = {
-                static_cast<int>(enemy.x),
-                static_cast<int>(enemy.y),
-                enemy.width,
-                enemy.height
-            };
-
-            bool overlaps = attackRect.x < enemyRect.x + enemyRect.w &&
-                            attackRect.x + attackRect.w > enemyRect.x &&
-                            attackRect.y < enemyRect.y + enemyRect.h &&
-                            attackRect.y + attackRect.h > enemyRect.y;
-
-            if (overlaps) {
-                applyEnemyDamage(enemy, 1, true);
-            }
-        }
-    }
-
-    for (auto& p : projectiles) {
-        if (!p.isActive) {
-            continue;
-        }
-
-        p.x += p.speed * static_cast<float>(p.direction);
-
-        if (p.x < 0.0f || p.x > WORLD_WIDTH) {
-            p.isActive = false;
-            continue;
-        }
-
-        SDL_Rect projectileRect = {
-            static_cast<int>(p.x),
-            static_cast<int>(p.y),
-            p.width,
-            p.height
-        };
-
-        for (auto& enemy : enemies) {
-            if (!enemy.isAlive) {
-                continue;
-            }
-
-            SDL_Rect enemyRect = {
-                static_cast<int>(enemy.x),
-                static_cast<int>(enemy.y),
-                enemy.width,
-                enemy.height
-            };
-
-            bool overlaps = projectileRect.x < enemyRect.x + enemyRect.w &&
-                            projectileRect.x + projectileRect.w > enemyRect.x &&
-                            projectileRect.y < enemyRect.y + enemyRect.h &&
-                            projectileRect.y + projectileRect.h > enemyRect.y;
-
-            if (overlaps) {
-                applyEnemyDamage(enemy, 1, true);
-                p.isActive = false;
-                break;
-            }
-        }
-
-        if (bossActive && boss.isAlive) {
-            SDL_Rect bossRect = {
-                static_cast<int>(boss.x),
-                static_cast<int>(boss.y),
-                boss.width,
-                boss.height
-            };
-
-            bool overlaps = projectileRect.x < bossRect.x + bossRect.w &&
-                            projectileRect.x + projectileRect.w > bossRect.x &&
-                            projectileRect.y < bossRect.y + bossRect.h &&
-                            projectileRect.y + projectileRect.h > bossRect.y;
-
-            if (overlaps) {
-                boss.health -= 1;
-                p.isActive = false;
-            }
-        }
-    }
-
-    if (player.isAttacking && bossActive && boss.isAlive) {
-        SDL_Rect attackRect = getAttackRect();
-
-        SDL_Rect bossRect = {
-            static_cast<int>(boss.x),
-            static_cast<int>(boss.y),
-            boss.width,
-            boss.height
-        };
-
-        bool overlaps = attackRect.x < bossRect.x + bossRect.w &&
-                        attackRect.x + attackRect.w > bossRect.x &&
-                        attackRect.y < bossRect.y + bossRect.h &&
-                        attackRect.y + attackRect.h > bossRect.y;
-
-        if (overlaps) {
-            boss.health -= 1;
-        }
-    }
-
-    for (auto& g : grenades) {
-        if (!g.isActive) {
-            continue;
-        }
-
-        g.timer -= frameSeconds;
-
-        if (g.timer <= 0.0f) {
-            float radius = 100.0f;
-
-            if (bossActive && boss.isAlive) {
-                float dx = boss.x - g.x;
-                float dy = boss.y - g.y;
-                float distance = std::sqrt(dx * dx + dy * dy);
-
-                if (distance < radius) {
-                    boss.health -= 5;
-                }
-            }
-
-            for (auto& enemy : enemies) {
-                if (!enemy.isAlive) {
-                    continue;
-                }
-
-                float dx = enemy.x - g.x;
-                float dy = enemy.y - g.y;
-                float distance = std::sqrt(dx * dx + dy * dy);
-
-                if (distance < radius) {
-                    applyEnemyDamage(enemy, 2, true);
-                }
-            }
-
-            g.isActive = false;
-        }
-    }
+    applyMeleeDamage();
+    updateProjectiles();
+    updateGrenades(frameSeconds);
 
     if (bossActive && boss.isAlive) {
         float deltaX = boss.x - player.x;
@@ -650,24 +800,16 @@ void Game::update() {
     if (bossActive && boss.isAlive && boss.health <= 0) {
         boss.isAlive = false;
         bossActive = false;
+        isVictory = true;
+        isPaused = false;
         SDL_Log("YOU WIN");
+        return;
     }
 
     if (player.health <= 0) {
-        resetPlayerStateForPhaseStart();
-        player.health = 100;
-        player.damageCooldownTimer = 0.0f;
-        projectiles.clear();
-        grenades.clear();
-        currentPhase = 1;
-        enemiesKilledInPhase = 0;
-        cameraX = 0.0f;
-        controlsHintTimer = 8.0f;
-        bossActive = false;
-        bossSpawnTriggered = false;
-        bossSpawnTimer = 0.0f;
-        boss = {900.0f, 0.0f, 120, 120, 100, false};
-        spawnEnemiesForPhase();
+        isGameOver = true;
+        isPaused = false;
+        return;
     }
 
     bool allEnemiesDead = true;
@@ -679,7 +821,10 @@ void Game::update() {
         }
     }
 
-    if (currentPhase == 1 && player.x >= 1400.0f) {
+    const bool reachedPhase2Gate = player.x >= 1400.0f;
+    const bool reachedPhase3Gate = player.x >= 2600.0f;
+
+    if (currentPhase == 1 && (reachedPhase2Gate || allEnemiesDead)) {
         currentPhase = 2;
         enemiesKilledInPhase = 0;
         player.grenadeCount += 1;
@@ -693,7 +838,7 @@ void Game::update() {
         spawnEnemiesForPhase();
     }
 
-    if (currentPhase == 2 && player.x >= 2800.0f) {
+    else if (currentPhase == 2 && (reachedPhase3Gate || allEnemiesDead)) {
         currentPhase = 3;
         enemiesKilledInPhase = 0;
         phaseBannerTimer = 1.5f;
@@ -729,6 +874,196 @@ void Game::update() {
 }
 
 void Game::render() {
+    auto fillRect = [&](int x, int y, int w, int h) {
+        SDL_Rect r = {x, y, w, h};
+        SDL_RenderFillRect(renderer, &r);
+    };
+
+    auto drawPhaseLetter = [&](char c, int x, int y, int scale) {
+        const int t = 2 * scale;
+        const int w = 12 * scale;
+        const int h = 18 * scale;
+
+        switch (c) {
+            case 'M':
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x + w / 2 - t / 2, y + h / 4, t, h - h / 4);
+                break;
+            case 'D':
+                fillRect(x, y, t, h);
+                fillRect(x, y, w - t / 2, t);
+                fillRect(x, y + h - t, w - t / 2, t);
+                fillRect(x + w - t, y + t / 2, t, h - t);
+                break;
+            case 'B':
+                fillRect(x, y, t, h);
+                fillRect(x, y, w - t / 2, t);
+                fillRect(x, y + h / 2 - t / 2, w - t / 2, t);
+                fillRect(x, y + h - t, w - t / 2, t);
+                fillRect(x + w - t, y + t / 2, t, h / 2 - t / 2);
+                fillRect(x + w - t, y + h / 2, t, h / 2 - t / 2);
+                break;
+            case 'I':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x + w / 2 - t / 2, y, t, h);
+                break;
+            case 'K':
+                fillRect(x, y, t, h);
+                fillRect(x + w / 2 - t / 2, y + h / 3, t, h / 3);
+                fillRect(x + w - t, y, t, h / 2);
+                fillRect(x + w - t, y + h / 2, t, h / 2);
+                break;
+            case 'C':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x, y, t, h);
+                break;
+            case 'P':
+                fillRect(x, y, t, h);
+                fillRect(x, y, w, t);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x + w - t, y, t, h / 2);
+                break;
+            case 'H':
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                break;
+            case 'A':
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x, y, w, t);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                break;
+            case 'L':
+                fillRect(x, y, t, h);
+                fillRect(x, y + h - t, w, t);
+                break;
+            case 'N':
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x + w / 2 - t / 2, y + h / 5, t, h - h / 5);
+                break;
+            case 'O':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                break;
+            case 'U':
+                fillRect(x, y, t, h - t);
+                fillRect(x + w - t, y, t, h - t);
+                fillRect(x, y + h - t, w, t);
+                break;
+            case 'W':
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x + w / 2 - t / 2, y + h / 2, t, h / 2);
+                break;
+            case 'Y':
+                fillRect(x, y, t, h / 2);
+                fillRect(x + w - t, y, t, h / 2);
+                fillRect(x + w / 2 - t / 2, y + h / 2 - t / 2, t, h / 2 + t / 2);
+                break;
+            case 'Q':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x, y, t, h);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x + w / 2, y + h / 2, t, h / 2);
+                break;
+            case 'R':
+                fillRect(x, y, t, h);
+                fillRect(x, y, w, t);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x + w - t, y, t, h / 2);
+                fillRect(x + w / 2 - t / 2, y + h / 2, t, h / 2);
+                break;
+            case 'T':
+                fillRect(x, y, w, t);
+                fillRect(x + w / 2 - t / 2, y, t, h);
+                break;
+            case 'S':
+                fillRect(x, y, w, t);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x, y + h - t, w, t);
+                fillRect(x, y, t, h / 2);
+                fillRect(x + w - t, y + h / 2, t, h / 2);
+                break;
+            case 'E':
+                fillRect(x, y, t, h);
+                fillRect(x, y, w, t);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x, y + h - t, w, t);
+                break;
+            default:
+                break;
+        }
+    };
+
+    auto drawWord = [&](const char* text, int x, int y, int scale) {
+        int cursor = x;
+        for (int i = 0; text[i] != '\0'; ++i) {
+            if (text[i] == ' ') {
+                cursor += 10 * scale;
+                continue;
+            }
+            drawPhaseLetter(text[i], cursor, y, scale);
+            cursor += 16 * scale;
+        }
+    };
+
+    if (showWelcomeScreen) {
+        SDL_SetRenderDrawColor(renderer, 6, 6, 10, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 120, 20, 20, 120);
+        SDL_Rect glow = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 3};
+        SDL_RenderFillRect(renderer, &glow);
+
+        SDL_SetRenderDrawColor(renderer, 230, 70, 70, 255);
+        drawWord("HELLBORNE", WINDOW_WIDTH / 2 - 236, WINDOW_HEIGHT / 2 - 88, 2);
+
+        SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+        drawWord("PATH TO CHAOS", WINDOW_WIDTH / 2 - 112, WINDOW_HEIGHT / 2 + 10, 1);
+
+        SDL_SetRenderDrawColor(renderer, 170, 170, 170, 255);
+        drawWord("PRESS ANY KEY", WINDOW_WIDTH / 2 - 104, WINDOW_HEIGHT / 2 + 58, 1);
+
+        SDL_RenderPresent(renderer);
+        return;
+    }
+
+    auto drawPhaseDigit = [&](int digit, int x, int y, int scale) {
+        const int t = 2 * scale;
+        const int w = 10 * scale;
+        const int h = 18 * scale;
+
+        switch (digit) {
+            case 1:
+                fillRect(x + w / 2 - t / 2, y, t, h);
+                break;
+            case 2:
+                fillRect(x, y, w, t);
+                fillRect(x + w - t, y, t, h / 2);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x, y + h / 2, t, h / 2);
+                fillRect(x, y + h - t, w, t);
+                break;
+            case 3:
+                fillRect(x, y, w, t);
+                fillRect(x + w - t, y, t, h);
+                fillRect(x, y + h / 2 - t / 2, w, t);
+                fillRect(x, y + h - t, w, t);
+                break;
+            default:
+                break;
+        }
+    };
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -813,9 +1148,52 @@ void Game::render() {
         SDL_RenderFillRect(renderer, &bossRect);
     }
 
+    if (currentPhase == 3 && (bossActive || bossSpawnTriggered)) {
+        SDL_Rect bossHudBack = {WINDOW_WIDTH / 2 - 170, 56, 340, 24};
+        SDL_SetRenderDrawColor(renderer, 18, 18, 18, 220);
+        SDL_RenderFillRect(renderer, &bossHudBack);
+
+        SDL_SetRenderDrawColor(renderer, 230, 230, 230, 255);
+        drawWord("BOSS HP", WINDOW_WIDTH / 2 - 64, 14, 1);
+
+        float healthRatio = 0.0f;
+        if (boss.maxHealth > 0) {
+            healthRatio = static_cast<float>(boss.health) / static_cast<float>(boss.maxHealth);
+        }
+        if (healthRatio < 0.0f) {
+            healthRatio = 0.0f;
+        }
+        if (healthRatio > 1.0f) {
+            healthRatio = 1.0f;
+        }
+
+        SDL_Rect bossHudFill = {WINDOW_WIDTH / 2 - 168, 58, static_cast<int>(336.0f * healthRatio), 20};
+        SDL_SetRenderDrawColor(renderer, 180, 40, 200, 255);
+        SDL_RenderFillRect(renderer, &bossHudFill);
+    }
+
     SDL_Rect phaseBack = {20, 20, 180, 26};
     SDL_SetRenderDrawColor(renderer, 30, 30, 30, 220);
     SDL_RenderFillRect(renderer, &phaseBack);
+
+    SDL_Rect hpBack = {20, 52, 180, 20};
+    SDL_SetRenderDrawColor(renderer, 30, 30, 30, 220);
+    SDL_RenderFillRect(renderer, &hpBack);
+
+    float hpRatio = static_cast<float>(player.health) / 100.0f;
+    if (hpRatio < 0.0f) {
+        hpRatio = 0.0f;
+    }
+    if (hpRatio > 1.0f) {
+        hpRatio = 1.0f;
+    }
+
+    SDL_Rect hpFill = {22, 54, static_cast<int>(176.0f * hpRatio), 16};
+    SDL_SetRenderDrawColor(renderer, 220, 60, 60, 255);
+    SDL_RenderFillRect(renderer, &hpFill);
+
+    SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+    drawWord("HP", 206, 52, 1);
 
     for (int i = 1; i <= 3; ++i) {
         SDL_Rect cell = {24 + (i - 1) * 58, 24, 52, 18};
@@ -827,6 +1205,50 @@ void Game::render() {
             SDL_RenderFillRect(renderer, &cell);
         }
     }
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_Rect phaseLabelBack = {WINDOW_WIDTH / 2 - 126, 16, 252, 34};
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 180);
+    SDL_RenderFillRect(renderer, &phaseLabelBack);
+
+    SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+    const char* phaseWord = "PHASE";
+    int phaseWordX = WINDOW_WIDTH / 2 - 114;
+    for (int i = 0; phaseWord[i] != '\0'; ++i) {
+        drawPhaseLetter(phaseWord[i], phaseWordX + i * 20, 24, 1);
+    }
+
+    SDL_SetRenderDrawColor(renderer, 230, 70, 70, 255);
+    drawPhaseDigit(currentPhase, WINDOW_WIDTH / 2 + 52, 24, 1);
+
+    SDL_Rect weaponBack = {WINDOW_WIDTH - 226, 20, 206, 56};
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 180);
+    SDL_RenderFillRect(renderer, &weaponBack);
+
+    for (int i = 0; i < 3; ++i) {
+        bool unlocked = (i == 0) || (i == 1 && player.hasPistol) || (i == 2 && player.hasShotgun);
+
+        SDL_Rect slot = {WINDOW_WIDTH - 216 + i * 66, 30, 56, 36};
+        if (unlocked) {
+            SDL_SetRenderDrawColor(renderer, 70, 170, 80, 220);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 75, 75, 75, 220);
+        }
+        SDL_RenderFillRect(renderer, &slot);
+
+        bool selected = (i == 0 && selectedWeapon == WeaponSelection::Melee) ||
+                        (i == 1 && selectedWeapon == WeaponSelection::Pistol) ||
+                        (i == 2 && selectedWeapon == WeaponSelection::Shotgun);
+        if (selected) {
+            SDL_SetRenderDrawColor(renderer, 255, 240, 120, 255);
+            SDL_RenderDrawRect(renderer, &slot);
+        }
+    }
+
+    SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+    drawPhaseLetter('M', WINDOW_WIDTH - 198, 38, 1);
+    drawPhaseLetter('P', WINDOW_WIDTH - 132, 38, 1);
+    drawPhaseLetter('S', WINDOW_WIDTH - 66, 38, 1);
 
     if (phaseBannerTimer > 0.0f) {
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -850,6 +1272,45 @@ void Game::render() {
         SDL_Rect rightBar = {WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT / 2 - 45, 18, 90};
         SDL_RenderFillRect(renderer, &leftBar);
         SDL_RenderFillRect(renderer, &rightBar);
+    }
+
+    if (isGameOver || isVictory) {
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 190);
+        SDL_Rect overlay = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+        SDL_RenderFillRect(renderer, &overlay);
+
+        if (isVictory) {
+            SDL_SetRenderDrawColor(renderer, 70, 220, 100, 255);
+            drawWord("YOU WIN", WINDOW_WIDTH / 2 - 120, WINDOW_HEIGHT / 2 - 54, 2);
+            SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+            drawWord("NICE WORK", WINDOW_WIDTH / 2 - 78, WINDOW_HEIGHT / 2 - 2, 1);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 230, 70, 70, 255);
+            drawWord("YOU DIED", WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 54, 2);
+            SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+            drawWord("PRESS R TO RETRY OR Q TO QUIT", WINDOW_WIDTH / 2 - 228, WINDOW_HEIGHT / 2 - 2, 1);
+        }
+
+        SDL_Rect retryButton = getRetryButtonRect();
+        SDL_Rect quitButton = getQuitButtonRect();
+
+        SDL_SetRenderDrawColor(renderer, 40, 110, 60, 230);
+        SDL_RenderFillRect(renderer, &retryButton);
+        SDL_SetRenderDrawColor(renderer, 255, 240, 120, 255);
+        SDL_RenderDrawRect(renderer, &retryButton);
+        SDL_SetRenderDrawColor(renderer, 245, 245, 245, 255);
+        drawWord("RETRY", retryButton.x + 34, retryButton.y + 11, 1);
+
+        SDL_SetRenderDrawColor(renderer, 120, 40, 40, 230);
+        SDL_RenderFillRect(renderer, &quitButton);
+        SDL_SetRenderDrawColor(renderer, 255, 240, 120, 255);
+        SDL_RenderDrawRect(renderer, &quitButton);
+        SDL_SetRenderDrawColor(renderer, 245, 245, 245, 255);
+        drawWord("QUIT", quitButton.x + 42, quitButton.y + 11, 1);
+
+        SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+        drawWord("CLICK BUTTON OR PRESS R OR Q", WINDOW_WIDTH / 2 - 184, WINDOW_HEIGHT / 2 + 148, 1);
     }
 
     SDL_RenderPresent(renderer);
