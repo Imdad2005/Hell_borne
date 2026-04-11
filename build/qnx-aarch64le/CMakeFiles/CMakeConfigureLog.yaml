@@ -66,7 +66,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -126,7 +125,6 @@ events:
     found: "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerId.cpp.in"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -293,7 +291,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -436,7 +433,6 @@ events:
     found: "C:/msys64/mingw64/bin/ranlib.exe"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -581,7 +577,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -724,7 +719,6 @@ events:
     found: "C:/msys64/mingw64/bin/ld.exe"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -869,7 +863,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -1012,7 +1005,6 @@ events:
     found: "C:/msys64/mingw64/bin/objdump.exe"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -1157,7 +1149,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -1300,7 +1291,6 @@ events:
     found: "C:/msys64/mingw64/bin/readelf.exe"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -1445,7 +1435,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -1588,7 +1577,6 @@ events:
     found: "C:/msys64/mingw64/bin/addr2line.exe"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -1771,7 +1759,6 @@ events:
     search_context:
       ENV{PATH}:
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
         - "C:\\python\\Scripts\\"
@@ -1813,8 +1800,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-i8se8k"
-      binary: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-i8se8k"
+      source: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-1iwb8i"
+      binary: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-1iwb8i"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "-Vgcc_ntoaarch64le_gpp"
       CMAKE_CXX_FLAGS_DEBUG: "-g -g"
@@ -1824,25 +1811,25 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-i8se8k'
+        Change Dir: 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-1iwb8i'
         
-        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe -f Makefile cmTC_a291e/fast
-        D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe  -f CMakeFiles/cmTC_a291e.dir/build.make CMakeFiles/cmTC_a291e.dir/build
-        make[1]: Entering directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-i8se8k'
-        Building CXX object CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o
-        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++   -Vgcc_ntoaarch64le_gpp    -v -Wp,-MD,CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o.d -Wp,-MT,CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o -Wp,-MF,CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o -c "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp"
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe -f Makefile cmTC_97073/fast
+        D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe  -f CMakeFiles/cmTC_97073.dir/build.make CMakeFiles/cmTC_97073.dir/build
+        make[1]: Entering directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-1iwb8i'
+        Building CXX object CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o
+        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++   -Vgcc_ntoaarch64le_gpp    -v -Wp,-MD,CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o.d -Wp,-MT,CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o -Wp,-MF,CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o -c "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp"
         cc1plus: fatal error: "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp": Invalid argument
         compilation terminated.
         cc: looking for gcc_ntoaarch64le_gpp in D:/qnx800_4/host/win64/x86_64/etc/qcc/gcc/12.2.0/gcc_ntoaarch64le_gpp++.conf
         cc: looking for gcc_ntoaarch64le_gpp in D:/qnx800_4/host/win64/x86_64/etc/qcc/gcc/12.2.0/gcc_ntoaarch64le_gpp.conf
-        D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/cc1plus -quiet -fstack-protector-strong -march=armv8-a -nostdinc -nostdinc++ -std=gnu++17 -D__QNX__=800 -D__QNXNTO__ -D__GNUC__=12 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=0 -D__NO_INLINE__ -D__DEPRECATED -D__unix__ -D__unix -D__ELF__ -fPIE -D__LITTLEENDIAN__ -Asystem(unix) -iplugindir=D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/plugin -MD CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o.d -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0 -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0 -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/backward -isystem D:/qnx800_4/target/qnx/usr/include -isystem D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/include -isystem D:/qnx800_4/target/qnx/usr/aarch64-unknown-nto-qnx8.0.0/include -idirafter D:/qnx800_4/target/qnx/usr/include -isystem D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/include C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -dumpbase C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -o C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccpiOTLC\\CMakeCXXCompilerABI.s
+        D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/cc1plus -quiet -fstack-protector-strong -march=armv8-a -nostdinc -nostdinc++ -std=gnu++17 -D__QNX__=800 -D__QNXNTO__ -D__GNUC__=12 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=0 -D__NO_INLINE__ -D__DEPRECATED -D__unix__ -D__unix -D__ELF__ -fPIE -D__LITTLEENDIAN__ -Asystem(unix) -iplugindir=D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/plugin -MD CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o.d -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0 -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0 -isystem D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/backward -isystem D:/qnx800_4/target/qnx/usr/include -isystem D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/include -isystem D:/qnx800_4/target/qnx/usr/aarch64-unknown-nto-qnx8.0.0/include -idirafter D:/qnx800_4/target/qnx/usr/include -isystem D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/include C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -dumpbase C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -o C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccxOimby\\CMakeCXXCompilerABI.s
         cc: D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/cc1plus caught signal 1
-        cc: unlinking CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o
-        cc: unlinking C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccpiOTLC\\CMakeCXXCompilerABI.s
-        cc: removing  C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccpiOTLC
-        make[1]: *** [CMakeFiles/cmTC_a291e.dir/build.make:82: CMakeFiles/cmTC_a291e.dir/CMakeCXXCompilerABI.cpp.o] Error 1
-        make[1]: Leaving directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-i8se8k'
-        make: *** [Makefile:134: cmTC_a291e/fast] Error 2
+        cc: unlinking CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o
+        cc: unlinking C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccxOimby\\CMakeCXXCompilerABI.s
+        cc: removing  C:\\Users\\Latitude\\AppData\\Local\\Temp\\2qccxOimby
+        make[1]: *** [CMakeFiles/cmTC_97073.dir/build.make:82: CMakeFiles/cmTC_97073.dir/CMakeCXXCompilerABI.cpp.o] Error 1
+        make[1]: Leaving directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-1iwb8i'
+        make: *** [Makefile:134: cmTC_97073/fast] Error 2
         
       exitCode: 2
   -
@@ -1853,8 +1840,8 @@ events:
     checks:
       - "Check for working CXX compiler: D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe"
     directories:
-      source: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx"
-      binary: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx"
+      source: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw"
+      binary: "D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "-Vgcc_ntoaarch64le_gpp"
       CMAKE_CXX_FLAGS_DEBUG: "-g -g"
@@ -1864,16 +1851,16 @@ events:
       variable: "CMAKE_CXX_COMPILER_WORKS"
       cached: true
       stdout: |
-        Change Dir: 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx'
+        Change Dir: 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw'
         
-        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe -f Makefile cmTC_e28eb/fast
-        D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe  -f CMakeFiles/cmTC_e28eb.dir/build.make CMakeFiles/cmTC_e28eb.dir/build
-        make[1]: Entering directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx'
-        Building CXX object CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o
-        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++   -Vgcc_ntoaarch64le_gpp  -Wp,-MD,CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o.d -Wp,-MT,CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o -Wp,-MF,CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o.d -o CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o -c D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx/testCXXCompiler.cxx
-        Linking CXX executable cmTC_e28eb
-        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe  -Vgcc_ntoaarch64le_gpp  -Vgcc_ntoaarch64le_gpp  "CMakeFiles/cmTC_e28eb.dir/testCXXCompiler.cxx.o"  -o cmTC_e28eb
-        make[1]: Leaving directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-p8pesx'
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe -f Makefile cmTC_be156/fast
+        D:/qnx800_4/host/win64/x86_64/usr/bin/make.exe  -f CMakeFiles/cmTC_be156.dir/build.make CMakeFiles/cmTC_be156.dir/build
+        make[1]: Entering directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw'
+        Building CXX object CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o
+        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe -x c++   -Vgcc_ntoaarch64le_gpp  -Wp,-MD,CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o.d -Wp,-MT,CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o -Wp,-MF,CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o.d -o CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o -c D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw/testCXXCompiler.cxx
+        Linking CXX executable cmTC_be156
+        D:/qnx800_4/host/win64/x86_64/usr/bin/q++.exe  -Vgcc_ntoaarch64le_gpp  -Vgcc_ntoaarch64le_gpp  "CMakeFiles/cmTC_be156.dir/testCXXCompiler.cxx.o"  -o cmTC_be156
+        make[1]: Leaving directory 'D:/Hell_borne/Hell_borne/build/qnx-aarch64le/CMakeFiles/CMakeScratch/TryCompile-3o4rdw'
         
       exitCode: 0
   -
@@ -1930,7 +1917,6 @@ events:
     found: null
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -1997,7 +1983,6 @@ events:
     found: "D:/qnx800_4/target/qnx/usr/include/"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
@@ -2066,7 +2051,6 @@ events:
     found: "D:/qnx800_4/target/qnx/aarch64le/lib/libSDL2.so"
     search_context:
       ENV{PATH}:
-        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "D:/qnx800_4/host/win64/x86_64/usr/bin"
         - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
         - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"

@@ -31,19 +31,19 @@ void Game::spawnEnemiesForPhase() {
     enemies.clear();
 
     if (currentPhase == 1) {
-        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
     } else if (currentPhase == 2) {
-        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 800.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1000.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
     } else {
-        enemies.push_back({phaseBaseX + 450.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 750.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 900.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 2.0f, false, 0.0f});
-        enemies.push_back({phaseBaseX + 1050.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 450.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 600.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 750.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 900.0f, groundY, 50, 50, true, Enemy::EnemyType::Medium, 3, 2.0f, false, 0.0f});
+        enemies.push_back({phaseBaseX + 1050.0f, groundY, 50, 50, true, Enemy::EnemyType::Weak, 1, 2.0f, false, 0.0f});
     }
 }
 
@@ -393,6 +393,30 @@ void Game::update() {
     const float maxCameraX = static_cast<float>(WORLD_WIDTH - WINDOW_WIDTH);
     cameraX = std::clamp(cameraTarget, 0.0f, maxCameraX);
 
+    auto applyEnemyDamage = [&](Enemy& enemy, int damage, bool triggerRage) {
+        if (!enemy.isAlive || damage <= 0) {
+            return;
+        }
+
+        enemy.health -= damage;
+
+        if (enemy.type == Enemy::EnemyType::Medium && triggerRage) {
+            enemy.isRaging = true;
+            enemy.rageTimer = 1.5f;
+        }
+
+        if (enemy.health <= 0) {
+            enemy.health = 0;
+            enemy.isAlive = false;
+            player.killCount += 1;
+            enemiesKilledInPhase += 1;
+
+            if (std::rand() % 2 == 0) {
+                player.pistolAmmo += 2;
+            }
+        }
+    };
+
     for (auto& enemy : enemies) {
         if (enemy.isAlive && !player.isDashing) {
             float currentSpeed = enemy.speed;
@@ -461,17 +485,7 @@ void Game::update() {
                             attackRect.y + attackRect.h > enemyRect.y;
 
             if (overlaps) {
-                if (enemy.type == Enemy::EnemyType::Medium) {
-                    enemy.isRaging = true;
-                    enemy.rageTimer = 1.5f;
-                } else {
-                    enemy.isAlive = false;
-                    player.killCount += 1;
-                    enemiesKilledInPhase += 1;
-                    if (std::rand() % 2 == 0) {
-                        player.pistolAmmo += 2;
-                    }
-                }
+                applyEnemyDamage(enemy, 1, true);
             }
         }
     }
@@ -483,7 +497,7 @@ void Game::update() {
 
         p.x += p.speed * static_cast<float>(p.direction);
 
-        if (p.x < 0.0f || p.x > WINDOW_WIDTH) {
+        if (p.x < 0.0f || p.x > WORLD_WIDTH) {
             p.isActive = false;
             continue;
         }
@@ -513,13 +527,8 @@ void Game::update() {
                             projectileRect.y + projectileRect.h > enemyRect.y;
 
             if (overlaps) {
-                enemy.isAlive = false;
+                applyEnemyDamage(enemy, 1, true);
                 p.isActive = false;
-                player.killCount += 1;
-                enemiesKilledInPhase += 1;
-                if (std::rand() % 2 == 0) {
-                    player.pistolAmmo += 2;
-                }
                 break;
             }
         }
@@ -594,9 +603,7 @@ void Game::update() {
                 float distance = std::sqrt(dx * dx + dy * dy);
 
                 if (distance < radius) {
-                    enemy.isAlive = false;
-                    player.killCount += 1;
-                    enemiesKilledInPhase += 1;
+                    applyEnemyDamage(enemy, 2, true);
                 }
             }
 

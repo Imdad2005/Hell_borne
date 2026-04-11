@@ -52,6 +52,7 @@ private:
         int height;
         bool isAlive;
         EnemyType type;
+        int health;
         float speed;
         bool isRaging;
         float rageTimer;
