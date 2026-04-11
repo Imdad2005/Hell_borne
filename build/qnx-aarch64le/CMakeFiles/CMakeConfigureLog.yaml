@@ -2097,3 +2097,261 @@ events:
         - "/usr/lib/X11"
       CMAKE_FIND_ROOT_PATH: "D:/qnx800_4/target/qnx"
 ...
+
+---
+events:
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:20 (find_package)"
+    name: "SDL2_image"
+    configs:
+      -
+        filename: "SDL2_imageConfig.cmake"
+        kind: "cmake"
+      -
+        filename: "sdl2_image-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "optional"
+      quiet: true
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "SDL2_image"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "ONLY"
+    candidates:
+      -
+        path: "D:/qnx800_4/target/qnx/usr/SDL2_imageConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "D:/qnx800_4/target/qnx/usr/sdl2_image-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "D:/qnx800_4/target/qnx/SDL2_imageConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "D:/qnx800_4/target/qnx/sdl2_image-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found: null
+    search_context:
+      ENV{PATH}:
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
+        - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
+        - "C:\\python\\Scripts\\"
+        - "C:\\python\\"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "c:\\Users\\Latitude\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "D:\\Coding_SCOPE\\Git\\cmd"
+        - "D:\\Coding_SCOPE\\Git\\mingw64\\bin"
+        - "D:\\Coding_SCOPE\\Git\\usr\\bin"
+        - "D:\\Node JSSSSSSS\\"
+        - "C:\\ProgramData\\chocolatey\\bin"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\msys64\\mingw64\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\VS Code\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\GitHubDesktop\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Roaming\\npm"
+        - "C:\\flutter\\bin"
+        - "D:\\flutter\\bin"
+        - "D:\\Android\\platform-tools-latest-windows"
+        - "C:\\Android\\platform-tools-latest-windows"
+        - "D:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "C:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "D:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\\\bin"
+        - "c:\\Users\\Latitude\\.vscode\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\bundled\\scripts\\noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Hellborne"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "C:/Program Files/CMake"
+        - "C:/Program Files (x86)/Hellborne"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_FIND_ROOT_PATH: "D:/qnx800_4/target/qnx"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:74 (find_path)"
+    mode: "path"
+    variable: "SDL2_IMAGE_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "SDL2/SDL_image.h"
+    candidate_directories:
+      - "D:/qnx800_4/target/qnx/usr/include/"
+      - "D:/qnx800_4/target/qnx/usr/include/"
+    found: "D:/qnx800_4/target/qnx/usr/include/"
+    search_context:
+      ENV{PATH}:
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
+        - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
+        - "C:\\python\\Scripts\\"
+        - "C:\\python\\"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "c:\\Users\\Latitude\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "D:\\Coding_SCOPE\\Git\\cmd"
+        - "D:\\Coding_SCOPE\\Git\\mingw64\\bin"
+        - "D:\\Coding_SCOPE\\Git\\usr\\bin"
+        - "D:\\Node JSSSSSSS\\"
+        - "C:\\ProgramData\\chocolatey\\bin"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\msys64\\mingw64\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\VS Code\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\GitHubDesktop\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Roaming\\npm"
+        - "C:\\flutter\\bin"
+        - "D:\\flutter\\bin"
+        - "D:\\Android\\platform-tools-latest-windows"
+        - "C:\\Android\\platform-tools-latest-windows"
+        - "D:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "C:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "D:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\\\bin"
+        - "c:\\Users\\Latitude\\.vscode\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\bundled\\scripts\\noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Hellborne"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "C:/Program Files/CMake"
+        - "C:/Program Files (x86)/Hellborne"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+      CMAKE_FIND_ROOT_PATH: "D:/qnx800_4/target/qnx"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:81 (find_library)"
+    mode: "library"
+    variable: "SDL2_IMAGE_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "SDL2_image"
+    candidate_directories:
+      - "D:/qnx800_4/target/qnx/aarch64le/lib/"
+      - "D:/qnx800_4/target/qnx/aarch64le/lib/"
+    found: "D:/qnx800_4/target/qnx/aarch64le/lib/libSDL2_image.so"
+    search_context:
+      ENV{PATH}:
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "D:/qnx800_4/host/win64/x86_64/usr/bin"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+        - "c:\\Users\\Latitude\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
+        - "C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\bin"
+        - "C:\\python\\Scripts\\"
+        - "C:\\python\\"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "c:\\Users\\Latitude\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "D:\\Coding_SCOPE\\Git\\cmd"
+        - "D:\\Coding_SCOPE\\Git\\mingw64\\bin"
+        - "D:\\Coding_SCOPE\\Git\\usr\\bin"
+        - "D:\\Node JSSSSSSS\\"
+        - "C:\\ProgramData\\chocolatey\\bin"
+        - "C:\\Program Files\\GitHub CLI\\"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\msys64\\mingw64\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\VS Code\\Microsoft VS Code\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Local\\GitHubDesktop\\bin"
+        - "C:\\Users\\Latitude\\AppData\\Roaming\\npm"
+        - "C:\\flutter\\bin"
+        - "D:\\flutter\\bin"
+        - "D:\\Android\\platform-tools-latest-windows"
+        - "C:\\Android\\platform-tools-latest-windows"
+        - "D:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "C:\\Android\\platform-tools-latest-windows\\platform-tools"
+        - "D:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Android\\commandlinetools-win-13114758_latest\\cmdline-tools\\bin"
+        - "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.16.8-hotspot\\\\bin"
+        - "c:\\Users\\Latitude\\.vscode\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\bundled\\scripts\\noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Hellborne"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "C:/Program Files/CMake"
+        - "C:/Program Files (x86)/Hellborne"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_FIND_ROOT_PATH: "D:/qnx800_4/target/qnx"
+...

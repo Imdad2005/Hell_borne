@@ -1,13 +1,17 @@
-CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
- D:/Hell_borne/Hell_borne/game.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_main.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_stdinc.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_config.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_platform.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/begin_code.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/close_code.h \
- D:/qnx800_4/target/qnx/usr/include/sys/types.h \
+CMakeFiles/hellborne.dir/source_files_copy/src/entities/EnemySpawner.cpp.o: \
+ D:/Hell_borne/Hell_borne/source_files_copy/src/entities/EnemySpawner.cpp \
+ D:/Hell_borne/Hell_borne/source_files_copy/src/entities/EnemySpawner.h \
+ D:/Hell_borne/Hell_borne/source_files_copy/src/entities/Enemy.h \
+ d:\hell_borne\hell_borne\source_files_copy\src\utils\vector2.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cmath \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/c++config.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/os_defines.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/cpu_defines.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/pstl_config.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/cpp_type_traits.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/type_traits.h \
+ D:/qnx800_4/target/qnx/usr/include/math.h \
+ D:/qnx800_4/target/qnx/usr/include/yvals.h \
  D:/qnx800_4/target/qnx/usr/include/sys/platform.h \
  D:/qnx800_4/target/qnx/usr/include/sys/ntohdr.h \
  D:/qnx800_4/target/qnx/usr/include/sys/compiler_gnu.h \
@@ -16,30 +20,9 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
  D:/qnx800_4/target/qnx/usr/include/_pack64.h \
  D:/qnx800_4/target/qnx/usr/include/sys/target_nto.h \
  D:/qnx800_4/target/qnx/usr/include/_packpop.h \
- D:/qnx800_4/target/qnx/usr/include/stdio.h \
- D:/qnx800_4/target/qnx/usr/include/yvals.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/stdlib.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cstdlib \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/c++config.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/os_defines.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/cpu_defines.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/pstl_config.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/std_abs.h \
  D:/qnx800_4/target/qnx/usr/include/stdlib.h \
  D:/qnx800_4/target/qnx/usr/include/malloc.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/std_abs.h \
- D:/qnx800_4/target/qnx/usr/include/stddef.h \
- D:/qnx800_4/target/qnx/usr/include/stdarg.h \
- D:/qnx800_4/target/qnx/usr/include/string.h \
- D:/qnx800_4/target/qnx/usr/include/strings.h \
- D:/qnx800_4/target/qnx/usr/include/wchar.h \
- D:/qnx800_4/target/qnx/usr/include/inttypes.h \
- D:/qnx800_4/target/qnx/usr/include/stdint.h \
- D:/qnx800_4/target/qnx/usr/include/ctype.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/math.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cmath \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/cpp_type_traits.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/type_traits.h \
- D:/qnx800_4/target/qnx/usr/include/math.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/specfun.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_algobase.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/functexcept.h \
@@ -70,6 +53,29 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/tr1/poly_hermite.tcc \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/tr1/poly_laguerre.tcc \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/tr1/riemann_zeta.tcc \
+ d:\hell_borne\hell_borne\source_files_copy\src\utils\aabb.h \
+ d:\hell_borne\hell_borne\source_files_copy\src\utils\Vector2.h \
+ d:\hell_borne\hell_borne\source_files_copy\src\combat\healthcomponent.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_main.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_stdinc.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_config.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_platform.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/begin_code.h \
+ D:/qnx800_4/target/qnx/usr/include/SDL2/close_code.h \
+ D:/qnx800_4/target/qnx/usr/include/sys/types.h \
+ D:/qnx800_4/target/qnx/usr/include/stdio.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/stdlib.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cstdlib \
+ D:/qnx800_4/target/qnx/usr/include/stddef.h \
+ D:/qnx800_4/target/qnx/usr/include/stdarg.h \
+ D:/qnx800_4/target/qnx/usr/include/string.h \
+ D:/qnx800_4/target/qnx/usr/include/strings.h \
+ D:/qnx800_4/target/qnx/usr/include/wchar.h \
+ D:/qnx800_4/target/qnx/usr/include/inttypes.h \
+ D:/qnx800_4/target/qnx/usr/include/stdint.h \
+ D:/qnx800_4/target/qnx/usr/include/ctype.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/math.h \
  D:/qnx800_4/host/win64/x86_64/usr/lib/gcc/aarch64-unknown-nto-qnx8.0.0/12.2.0/include/float.h \
  D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_assert.h \
  D:/qnx800_4/target/qnx/usr/include/signal.h \
@@ -119,7 +125,7 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
  D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_version.h \
  D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_locale.h \
  D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_misc.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/vector \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/memory \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/allocator.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/c++allocator.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/new_allocator.h \
@@ -130,45 +136,28 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_uninitialized.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/alloc_traits.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/alloc_traits.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_vector.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/initializer_list \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_bvector.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/functional_hash.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/hash_bytes.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/refwrap.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_tempbuf.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_raw_storage_iter.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/align.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bit \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/uses_allocator.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/unique_ptr.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/tuple \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/invoke.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_function.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/backward/binders.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/range_access.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/vector.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/algorithm \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_algo.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/algorithmfwd.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_heap.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_tempbuf.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/uniform_int_dist.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/glue_algorithm_defs.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/execution_defs.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/iostream \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ostream \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ios \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/functional_hash.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/hash_bytes.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/shared_ptr.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/iosfwd \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stringfwd.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/postypes.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cwchar \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/exception \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/exception_ptr.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/cxxabi_init_exception.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/shared_ptr_base.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/typeinfo \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/nested_exception.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/char_traits.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cstdint \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/localefwd.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/c++locale.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/clocale \
- D:/qnx800_4/target/qnx/usr/include/locale.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cctype \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/ios_base.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/allocated_ptr.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/refwrap.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/aligned_buffer.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/atomicity.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/gthr.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/gthr-default.h \
@@ -179,49 +168,20 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
  D:/qnx800_4/target/qnx/usr/include/sched.h \
  D:/qnx800_4/target/qnx/usr/include/sys/storage.h \
  D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/atomic_word.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_classes.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/string \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/ostream_insert.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/cxxabi_forced.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/basic_string.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/string_view \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/string_view.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/string_conversions.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cstdio \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cerrno \
- D:/qnx800_4/target/qnx/usr/include/errno.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/charconv.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/basic_string.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_classes.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/system_error \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/error_constants.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/stdexcept \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/streambuf \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/streambuf.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/basic_ios.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_facets.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/cwctype \
- D:/qnx800_4/target/qnx/usr/include/wctype.h \
- D:/qnx800_4/target/qnx/usr/include/xwcc.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/ctype_base.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/streambuf_iterator.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/ctype_inline.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_facets.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/basic_ios.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/ostream.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/istream \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/istream.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/iomanip \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/locale \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_facets_nonio.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ctime \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/time_members.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/messages_members.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/codecvt.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_facets_nonio.tcc \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/locale_conv.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/quoted_string.h \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/sstream \
- D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/sstream.tcc \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_image.h \
- D:/qnx800_4/target/qnx/usr/include/SDL2/SDL.h
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/ext/concurrence.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/exception \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/exception_ptr.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/cxxabi_init_exception.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/nested_exception.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/shared_ptr_atomic.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/atomic_base.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/atomic_lockfree_defines.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/backward/auto_ptr.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/glue_memory_defs.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/pstl/execution_defs.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/vector \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_vector.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/initializer_list \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/stl_bvector.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/range_access.h \
+ D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/vector.tcc

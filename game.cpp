@@ -6,9 +6,72 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <string>
+#include <SDL2/SDL_image.h>
+
+namespace {
+constexpr int PLAYER_SHEET_FRAME_WIDTH = 32;
+constexpr int PLAYER_SHEET_FRAME_HEIGHT = 48;
+constexpr float PLAYER_IDLE_FRAME_DURATION = 0.10f;
+constexpr float PLAYER_RUN_FRAME_DURATION = 0.08f;
+constexpr float PLAYER_SHOOT_FRAME_DURATION = 0.06f;
+
+void drawNightBackground(SDL_Renderer* renderer, int width, int height) {
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+    SDL_SetRenderDrawColor(renderer, 38, 20, 34, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 62, 28, 54, 255);
+    SDL_Rect bandTop = {0, 0, width, height / 3};
+    SDL_RenderFillRect(renderer, &bandTop);
+
+    SDL_SetRenderDrawColor(renderer, 140, 56, 72, 255);
+    SDL_Rect bandMid = {0, height / 3, width, height / 3};
+    SDL_RenderFillRect(renderer, &bandMid);
+
+    SDL_SetRenderDrawColor(renderer, 236, 126, 72, 255);
+    SDL_Rect bandLow = {0, height * 2 / 3, width, height / 3};
+    SDL_RenderFillRect(renderer, &bandLow);
+
+    SDL_SetRenderDrawColor(renderer, 252, 188, 90, 135);
+    SDL_Rect sunGlow = {width - 330, 70, 240, 240};
+    SDL_RenderFillRect(renderer, &sunGlow);
+
+    SDL_SetRenderDrawColor(renderer, 255, 208, 110, 255);
+    SDL_Rect sunCore = {width - 278, 122, 136, 136};
+    SDL_RenderFillRect(renderer, &sunCore);
+
+    SDL_SetRenderDrawColor(renderer, 255, 232, 178, 170);
+    for (int index = 0; index < 36; ++index) {
+        const int cloudX = ((index * 83) % (width + 180)) - 90;
+        const int cloudY = 62 + ((index * 39) % (height / 2));
+        const int cloudW = 72 + ((index * 13) % 96);
+        const int cloudH = 10 + ((index * 7) % 16);
+        SDL_Rect cloud = {cloudX, cloudY, cloudW, cloudH};
+        SDL_RenderFillRect(renderer, &cloud);
+    }
+
+    SDL_SetRenderDrawColor(renderer, 52, 20, 26, 255);
+    SDL_Rect horizon = {0, height - 124, width, 124};
+    SDL_RenderFillRect(renderer, &horizon);
+
+    SDL_SetRenderDrawColor(renderer, 34, 12, 20, 255);
+    SDL_Rect silhouette1 = {0, height - 170, width / 4, 170};
+    SDL_Rect silhouette2 = {width / 5, height - 150, width / 3, 150};
+    SDL_Rect silhouette3 = {width / 2, height - 190, width / 4, 190};
+    SDL_Rect silhouette4 = {width * 3 / 4, height - 160, width / 4, 160};
+    SDL_RenderFillRect(renderer, &silhouette1);
+    SDL_RenderFillRect(renderer, &silhouette2);
+    SDL_RenderFillRect(renderer, &silhouette3);
+    SDL_RenderFillRect(renderer, &silhouette4);
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+}
+}
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), perfFreq(0), lastInputEventCounter(0), hasPendingInputSample(false), totalFrameMs(0.0), totalFrameMsSq(0.0), minFrameMs(0.0), maxFrameMs(0.0), totalWorkMs(0.0), totalFixedDriftMs(0.0), maxFixedDriftMs(0.0), totalInputLatencyMs(0.0), inputLatencySamples(0), totalFrames(0), droppedFrames(0), prevEnemiesCapacity(0), prevProjectilesCapacity(0), prevGrenadesCapacity(0), capacityChangeEvents(0), totalEntitiesProcessed(0.0), totalEntitiesProcessedSq(0.0), entitySamples(0), entitiesProcessedThisFrame(0), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 0, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
+    : window(nullptr), renderer(nullptr), playerIdleTexture(nullptr), playerRunTexture(nullptr), playerShootTexture(nullptr), playerIdleFrameCount(1), playerRunFrameCount(1), playerShootFrameCount(1), playerCurrentFrame(0), playerAnimationTimer(0.0f), playerAnimationState(PlayerAnimationState::Idle), isRunning(false), currentPhase(1), enemiesKilledInPhase(0), bossActive(false), bossSpawnTriggered(false), bossSpawnTimer(0.0f), cameraX(0.0f), isPaused(false), showWelcomeScreen(false), isGameOver(false), isVictory(false), phaseBannerTimer(0.0f), controlsHintTimer(0.0f), selectedWeapon(WeaponSelection::Melee), perfFreq(0), lastInputEventCounter(0), hasPendingInputSample(false), totalFrameMs(0.0), totalFrameMsSq(0.0), minFrameMs(0.0), maxFrameMs(0.0), totalWorkMs(0.0), totalFixedDriftMs(0.0), maxFixedDriftMs(0.0), totalInputLatencyMs(0.0), inputLatencySamples(0), totalFrames(0), droppedFrames(0), prevEnemiesCapacity(0), prevProjectilesCapacity(0), prevGrenadesCapacity(0), capacityChangeEvents(0), totalEntitiesProcessed(0.0), totalEntitiesProcessedSq(0.0), entitySamples(0), entitiesProcessedThisFrame(0), player{100.0f, 0.0f, 0.0f, 0.0f, 50, 50, false, false, 0.0f, 0.0f, 1, false, false, 0.0f, 0.0f, 1, 100, 0.0f, false, 0, 0, false, 0, 2, false}, boss{900.0f, 0.0f, 120, 120, 35, 35, false} {
 }
 
 void Game::beginPerformanceTracking() {
@@ -124,6 +187,142 @@ void Game::resetPlayerStateForPhaseStart() {
     player.attackTimer = 0.0f;
     player.attackCooldownTimer = 0.0f;
     player.jumpRequested = false;
+    playerAnimationState = PlayerAnimationState::Idle;
+    playerCurrentFrame = 0;
+    playerAnimationTimer = 0.0f;
+}
+
+bool Game::loadPlayerSpriteSheets() {
+    auto loadSheet = [this](const char* path, SDL_Texture*& texture, int& frameCount) -> bool {
+        texture = IMG_LoadTexture(renderer, path);
+        if (texture == nullptr) {
+            SDL_Log("Unable to load player sheet %s: %s", path, IMG_GetError());
+            frameCount = 1;
+            return false;
+        }
+
+        int textureWidth = 0;
+        int textureHeight = 0;
+        if (SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight) != 0) {
+            SDL_Log("Unable to query player sheet %s: %s", path, SDL_GetError());
+            frameCount = 1;
+            return true;
+        }
+
+        (void)textureHeight;
+        frameCount = std::max(1, textureWidth / PLAYER_SHEET_FRAME_WIDTH);
+        return true;
+    };
+
+    const bool idleLoaded = loadSheet("assets/sprites/player/player_idle_sheet.png", playerIdleTexture, playerIdleFrameCount);
+    const bool runLoaded = loadSheet("assets/sprites/player/player_run_sheet.png", playerRunTexture, playerRunFrameCount);
+    const bool shootLoaded = loadSheet("assets/sprites/player/player_shoot_sheet.png", playerShootTexture, playerShootFrameCount);
+
+    if (!idleLoaded && !runLoaded && !shootLoaded) {
+        SDL_Log("Player sprite sheets not found - using fallback rendering");
+        return false;
+    }
+
+    return true;
+}
+
+void Game::updatePlayerAnimation(float frameSeconds) {
+    PlayerAnimationState desiredState = PlayerAnimationState::Idle;
+    if (player.isAttacking) {
+        desiredState = PlayerAnimationState::Shoot;
+    } else if (std::fabs(player.vx) > 1.0f) {
+        desiredState = PlayerAnimationState::Run;
+    }
+
+    if (desiredState != playerAnimationState) {
+        playerAnimationState = desiredState;
+        playerCurrentFrame = 0;
+        playerAnimationTimer = 0.0f;
+    }
+
+    int frameCount = 1;
+    float frameDuration = PLAYER_IDLE_FRAME_DURATION;
+    bool looping = true;
+
+    switch (playerAnimationState) {
+        case PlayerAnimationState::Idle:
+            frameCount = playerIdleFrameCount;
+            frameDuration = PLAYER_IDLE_FRAME_DURATION;
+            looping = true;
+            break;
+        case PlayerAnimationState::Run:
+            frameCount = playerRunFrameCount;
+            frameDuration = PLAYER_RUN_FRAME_DURATION;
+            looping = true;
+            break;
+        case PlayerAnimationState::Shoot:
+            frameCount = playerShootFrameCount;
+            frameDuration = PLAYER_SHOOT_FRAME_DURATION;
+            looping = false;
+            break;
+    }
+
+    frameCount = std::max(1, frameCount);
+
+    playerAnimationTimer += frameSeconds;
+    while (playerAnimationTimer >= frameDuration) {
+        playerAnimationTimer -= frameDuration;
+        playerCurrentFrame += 1;
+        if (playerCurrentFrame >= frameCount) {
+            playerCurrentFrame = looping ? 0 : frameCount - 1;
+        }
+    }
+}
+
+void Game::renderPlayerSprite(float cameraX) {
+    SDL_Texture* texture = nullptr;
+    int frameCount = 1;
+
+    switch (playerAnimationState) {
+        case PlayerAnimationState::Idle:
+            texture = playerIdleTexture;
+            frameCount = playerIdleFrameCount;
+            break;
+        case PlayerAnimationState::Run:
+            texture = playerRunTexture;
+            frameCount = playerRunFrameCount;
+            break;
+        case PlayerAnimationState::Shoot:
+            texture = playerShootTexture;
+            frameCount = playerShootFrameCount;
+            break;
+    }
+
+    if (texture == nullptr) {
+        SDL_Rect playerRect = {
+            static_cast<int>(player.x - cameraX),
+            static_cast<int>(player.y),
+            player.width,
+            player.height
+        };
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(renderer, &playerRect);
+        return;
+    }
+
+    const int safeFrameCount = std::max(1, frameCount);
+    const int frameIndex = std::min(playerCurrentFrame, safeFrameCount - 1);
+
+    SDL_Rect srcRect = {
+        PLAYER_SHEET_FRAME_WIDTH * frameIndex,
+        0,
+        PLAYER_SHEET_FRAME_WIDTH,
+        PLAYER_SHEET_FRAME_HEIGHT
+    };
+    SDL_Rect destRect = {
+        static_cast<int>(player.x - cameraX),
+        static_cast<int>(player.y),
+        player.width,
+        player.height
+    };
+
+    SDL_RendererFlip flip = player.facingDirection >= 0 ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RenderCopyEx(renderer, texture, &srcRect, &destRect, 0.0, nullptr, flip);
 }
 
 void Game::spawnEnemiesForPhase() {
@@ -192,6 +391,8 @@ bool Game::init() {
         SDL_Quit();
         return false;
     }
+
+    loadPlayerSpriteSheets();
 
     restartGame();
     showWelcomeScreen = true;
@@ -861,6 +1062,8 @@ void Game::update() {
         player.onGround = true;
     }
 
+    updatePlayerAnimation(frameSeconds);
+
     const float cameraTarget = player.x + static_cast<float>(player.width) * 0.5f - static_cast<float>(WINDOW_WIDTH) * 0.5f;
     const float maxCameraX = static_cast<float>(WORLD_WIDTH - WINDOW_WIDTH);
     cameraX = std::clamp(cameraTarget, 0.0f, maxCameraX);
@@ -1205,8 +1408,7 @@ void Game::render() {
     };
 
     if (showWelcomeScreen) {
-        SDL_SetRenderDrawColor(renderer, 6, 6, 10, 255);
-        SDL_RenderClear(renderer);
+        drawNightBackground(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
         SDL_SetRenderDrawColor(renderer, 120, 20, 20, 120);
@@ -1253,17 +1455,9 @@ void Game::render() {
         }
     };
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    drawNightBackground(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    SDL_Rect playerRect = {
-        static_cast<int>(player.x - cameraX),
-        static_cast<int>(player.y),
-        player.width,
-        player.height
-    };
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderFillRect(renderer, &playerRect);
+    renderPlayerSprite(cameraX);
 
     for (const auto& enemy : enemies) {
         if (enemy.isAlive) {
@@ -1531,6 +1725,21 @@ void Game::render() {
 }
 
 void Game::cleanup() {
+    if (playerIdleTexture != nullptr) {
+        SDL_DestroyTexture(playerIdleTexture);
+        playerIdleTexture = nullptr;
+    }
+
+    if (playerRunTexture != nullptr) {
+        SDL_DestroyTexture(playerRunTexture);
+        playerRunTexture = nullptr;
+    }
+
+    if (playerShootTexture != nullptr) {
+        SDL_DestroyTexture(playerShootTexture);
+        playerShootTexture = nullptr;
+    }
+
     if (renderer != nullptr) {
         SDL_DestroyRenderer(renderer);
         renderer = nullptr;
@@ -1541,6 +1750,7 @@ void Game::cleanup() {
         window = nullptr;
     }
 
+    IMG_Quit();
     SDL_Quit();
     isRunning = false;
 }

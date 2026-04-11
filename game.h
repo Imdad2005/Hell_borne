@@ -16,6 +16,7 @@ public:
     void cleanup();
 
 private:
+    enum class PlayerAnimationState { Idle, Run, Shoot };
     enum class WeaponSelection { Melee, Pistol, Shotgun };
 
     struct Player {
@@ -110,9 +111,21 @@ private:
     void applyMeleeDamage();
     void updateProjectiles();
     void updateGrenades(float frameSeconds);
+    bool loadPlayerSpriteSheets();
+    void updatePlayerAnimation(float frameSeconds);
+    void renderPlayerSprite(float cameraX);
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* playerIdleTexture;
+    SDL_Texture* playerRunTexture;
+    SDL_Texture* playerShootTexture;
+    int playerIdleFrameCount;
+    int playerRunFrameCount;
+    int playerShootFrameCount;
+    int playerCurrentFrame;
+    float playerAnimationTimer;
+    PlayerAnimationState playerAnimationState;
     bool isRunning;
     int currentPhase;
     int enemiesKilledInPhase;

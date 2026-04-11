@@ -200,10 +200,19 @@ Hellborne_SOURCE_DIR:STATIC=D:/Hell_borne/Hell_borne
 SDL2_DIR:PATH=SDL2_DIR-NOTFOUND
 
 //Path to a file.
+SDL2_IMAGE_INCLUDE_DIR:PATH=D:/qnx800_4/target/qnx/usr/include
+
+//Path to a library.
+SDL2_IMAGE_LIBRARY:FILEPATH=D:/qnx800_4/target/qnx/aarch64le/lib/libSDL2_image.so
+
+//Path to a file.
 SDL2_INCLUDE_DIR:PATH=D:/qnx800_4/target/qnx/usr/include
 
 //Path to a library.
 SDL2_LIBRARY:FILEPATH=D:/qnx800_4/target/qnx/aarch64le/lib/libSDL2.so
+
+//The directory containing a CMake configuration file for SDL2_image.
+SDL2_image_DIR:PATH=SDL2_image_DIR-NOTFOUND
 
 
 ########################

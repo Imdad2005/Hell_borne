@@ -25,6 +25,7 @@ CMakeFiles/hellborne.dir/game.cpp.o: D:/Hell_borne/Hell_borne/game.cpp \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_haptic.h \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_hidapi.h \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_hints.h \
+  D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_image.h \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_joystick.h \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_keyboard.h \
   D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_keycode.h \
@@ -482,6 +483,10 @@ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_hidapi.h:
 
 D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_hints.h:
 
+D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_timer.h:
+
+D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_image.h:
+
 D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_joystick.h:
 
 D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_keyboard.h:
@@ -512,15 +517,13 @@ D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_rwops.h:
 
 D:/qnx800_4/target/qnx/usr/include/string.h:
 
-D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_stdinc.h:
-
 D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/aarch64-unknown-nto-qnx8.0.0/bits/c++locale.h:
+
+D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_stdinc.h:
 
 D:/qnx800_4/target/qnx/usr/include/c++/12.2.0/bits/invoke.h:
 
 D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_system.h:
-
-D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_timer.h:
 
 D:/qnx800_4/target/qnx/usr/include/SDL2/SDL_touch.h:
 

@@ -29,18 +29,32 @@ Player::Player()
 }
 
 Player::~Player() {
-    sprite.free();
+    idleSprite.free();
+    runSprite.free();
+    shootSprite.free();
 }
 
 bool Player::init(SDL_Renderer* renderer) {
-    // Try to load player sprite (fallback to colored rectangle if missing)
-    if (!sprite.loadFromFile(renderer, "assets/sprites/player.png")) {
-        SDL_Log("Player sprite not found - using fallback rendering");
+    bool idleLoaded = idleSprite.loadFromFile(renderer, "assets/sprites/player/player_idle_sheet.png");
+    bool runLoaded = runSprite.loadFromFile(renderer, "assets/sprites/player/player_run_sheet.png");
+    bool shootLoaded = shootSprite.loadFromFile(renderer, "assets/sprites/player/player_shoot_sheet.png");
+
+    if (!idleLoaded && !runLoaded && !shootLoaded) {
+        SDL_Log("Player sprite sheets not found - using fallback rendering");
     }
     
     // Setup animations
-    Animation idleAnim(1, 0.1f, true);   // 1 frame, static
-    Animation runAnim(6, 0.1f, true);    // 6 frames, 10 FPS
+    int idleFrames = idleLoaded ? idleSprite.getWidth() / static_cast<int>(PLAYER_WIDTH) : 1;
+    int runFrames = runLoaded ? runSprite.getWidth() / static_cast<int>(PLAYER_WIDTH) : 1;
+    int shootFrames = shootLoaded ? shootSprite.getWidth() / static_cast<int>(PLAYER_WIDTH) : 1;
+
+    if (idleFrames < 1) idleFrames = 1;
+    if (runFrames < 1) runFrames = 1;
+    if (shootFrames < 1) shootFrames = 1;
+
+    Animation idleAnim(idleFrames, 0.1f, true);
+    Animation runAnim(runFrames, 0.08f, true);
+    Animation shootAnim(shootFrames, 0.06f, false);
     Animation jumpAnim(3, 0.1f, false);  // 3 frames, one-shot
     Animation fallAnim(2, 0.1f, true);   // 2 frames, looping
     Animation dashAnim(4, 0.05f, false); // 4 frames, fast, one-shot
@@ -48,6 +62,7 @@ bool Player::init(SDL_Renderer* renderer) {
     // Set frame sizes (32x48 player sprite)
     idleAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
     runAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
+    shootAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
     jumpAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
     fallAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
     dashAnim.setFrameSize(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -55,6 +70,7 @@ bool Player::init(SDL_Renderer* renderer) {
     // Add to animation manager
     animManager.addAnimation("idle", idleAnim);
     animManager.addAnimation("run", runAnim);
+    animManager.addAnimation("shoot", shootAnim);
     animManager.addAnimation("jump", jumpAnim);
     animManager.addAnimation("fall", fallAnim);
     animManager.addAnimation("dash", dashAnim);
@@ -117,7 +133,7 @@ void Player::update(float deltaTime) {
         state = PLAYER_DEAD;
     } else if (isAttacking) {
         state = PLAYER_ATTACKING;
-        animManager.setAnimation("idle"); // Will add attack animation later
+        animManager.setAnimation("shoot");
     } else if (isDashing) {
         state = PLAYER_DASHING;
         animManager.setAnimation("dash");
@@ -154,13 +170,28 @@ void Player::render(SDL_Renderer* renderer, float cameraX, float cameraY) {
         static_cast<int>(PLAYER_HEIGHT)
     };
     
-    if (sprite.isLoaded()) {
+    const std::string animationName = animManager.getCurrentAnimationName();
+    const Texture* activeSprite = nullptr;
+
+    if (animationName == "shoot" && shootSprite.isLoaded()) {
+        activeSprite = &shootSprite;
+    } else if (animationName == "run" && runSprite.isLoaded()) {
+        activeSprite = &runSprite;
+    } else if (idleSprite.isLoaded()) {
+        activeSprite = &idleSprite;
+    } else if (runSprite.isLoaded()) {
+        activeSprite = &runSprite;
+    } else if (shootSprite.isLoaded()) {
+        activeSprite = &shootSprite;
+    }
+
+    if (activeSprite != nullptr) {
         // Get current animation frame
         SDL_Rect srcRect = animManager.getCurrentFrameRect();
         
         // Render sprite sheet frame using Texture helper
         SDL_RendererFlip flip = facingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        sprite.render(renderer, destRect.x, destRect.y, &srcRect, 0.0, nullptr, flip);
+        activeSprite->render(renderer, destRect.x, destRect.y, &srcRect, 0.0, nullptr, flip);
     } else {
         // Fallback: colored rectangle
         SDL_SetRenderDrawColor(renderer, 
@@ -336,6 +367,7 @@ void Player::attack() {
     weapon->attack();
     isAttacking = true;
     attackTimer = 0.3f; // Attack animation duration
+    animManager.setAnimation("shoot");
     
     SDL_Log("Player attacked with %s!", weapon->getName().c_str());
 }

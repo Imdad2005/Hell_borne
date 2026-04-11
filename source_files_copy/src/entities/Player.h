@@ -68,7 +68,9 @@ private:
     AABB attackHitbox;
     
     // Rendering
-    Texture sprite;
+    Texture idleSprite;
+    Texture runSprite;
+    Texture shootSprite;
     AnimationManager animManager;
     SDL_Color fallbackColor;
 
