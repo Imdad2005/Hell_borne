@@ -11,7 +11,7 @@ The repository currently contains two related code paths:
 
 The default build target currently compiles the root demo build. The `source_files_copy/` tree is useful as technical reference material and for presentation material, but it is not wired into the top-level CMake target yet.
 
-## What the Game Does
+## What does the game do?
 
 The current implementation includes:
 
@@ -119,7 +119,7 @@ Current baseline quality checks:
 
 What is supported in the codebase today:
 
-- QNX-aware build configuration
-- low-latency input-first loop design
+- QNX-aware build configuration.
+- low-latency input-first loop design.
 - modular gameplay and UI scaffolding in `source_files_copy/`
-- binary save/load implementation
+- binary save/load implementation.
